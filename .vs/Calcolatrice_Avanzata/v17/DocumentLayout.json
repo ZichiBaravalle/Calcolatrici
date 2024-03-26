@@ -1,0 +1,91 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Utente\\Desktop\\esercizi C#\\es visuali\\es laboratorio\\es 3\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3ED554E9-8EFE-4006-A705-D71718F9DB9B}|Calcolatrice_Avanzata\\Calcolatrice_Avanzata.csproj|c:\\users\\utente\\desktop\\esercizi c#\\es visuali\\es laboratorio\\es 3\\calcolatrice_avanzata\\classebottoni.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3ED554E9-8EFE-4006-A705-D71718F9DB9B}|Calcolatrice_Avanzata\\Calcolatrice_Avanzata.csproj|solutionrelative:calcolatrice_avanzata\\classebottoni.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3ED554E9-8EFE-4006-A705-D71718F9DB9B}|Calcolatrice_Avanzata\\Calcolatrice_Avanzata.csproj|C:\\Users\\Utente\\Desktop\\esercizi C#\\es visuali\\es laboratorio\\es 3\\calcolatrice_avanzata\\calcolatricescientifica.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3ED554E9-8EFE-4006-A705-D71718F9DB9B}|Calcolatrice_Avanzata\\Calcolatrice_Avanzata.csproj|solutionrelative:calcolatrice_avanzata\\calcolatricescientifica.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3ED554E9-8EFE-4006-A705-D71718F9DB9B}|Calcolatrice_Avanzata\\Calcolatrice_Avanzata.csproj|C:\\Users\\Utente\\Desktop\\esercizi C#\\es visuali\\es laboratorio\\es 3\\calcolatrice_avanzata\\calcolatricescientifica.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3ED554E9-8EFE-4006-A705-D71718F9DB9B}|Calcolatrice_Avanzata\\Calcolatrice_Avanzata.csproj|solutionrelative:calcolatrice_avanzata\\calcolatricescientifica.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3ED554E9-8EFE-4006-A705-D71718F9DB9B}|Calcolatrice_Avanzata\\Calcolatrice_Avanzata.csproj|C:\\Users\\Utente\\Desktop\\esercizi C#\\es visuali\\es laboratorio\\es 3\\calcolatrice_avanzata\\calcolatricescientifica.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{3ED554E9-8EFE-4006-A705-D71718F9DB9B}|Calcolatrice_Avanzata\\Calcolatrice_Avanzata.csproj|solutionrelative:calcolatrice_avanzata\\calcolatricescientifica.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 269,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1a46fd64-28d5-434c-8eb3-17a02d419b53}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CalcolatriceScientifica.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\Utente\\Desktop\\esercizi C#\\es visuali\\es laboratorio\\es 3\\Calcolatrice_Avanzata\\CalcolatriceScientifica.Designer.cs",
+              "RelativeDocumentMoniker": "Calcolatrice_Avanzata\\CalcolatriceScientifica.Designer.cs",
+              "ToolTip": "C:\\Users\\Utente\\Desktop\\esercizi C#\\es visuali\\es laboratorio\\es 3\\Calcolatrice_Avanzata\\CalcolatriceScientifica.Designer.cs",
+              "RelativeToolTip": "Calcolatrice_Avanzata\\CalcolatriceScientifica.Designer.cs",
+              "ViewState": "AQIAABYCAAAAAAAAAAAnwC8CAAA3AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-19T20:19:02.385Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ClasseBottoni.cs",
+              "DocumentMoniker": "C:\\Users\\Utente\\Desktop\\esercizi C#\\es visuali\\es laboratorio\\es 3\\Calcolatrice_Avanzata\\ClasseBottoni.cs",
+              "RelativeDocumentMoniker": "Calcolatrice_Avanzata\\ClasseBottoni.cs",
+              "ToolTip": "C:\\Users\\Utente\\Desktop\\esercizi C#\\es visuali\\es laboratorio\\es 3\\Calcolatrice_Avanzata\\ClasseBottoni.cs",
+              "RelativeToolTip": "Calcolatrice_Avanzata\\ClasseBottoni.cs",
+              "ViewState": "AQIAAIcAAAAAAAAAAAAAAK4AAABBAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-20T13:52:04.051Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CalcolatriceScientifica.cs",
+              "DocumentMoniker": "C:\\Users\\Utente\\Desktop\\esercizi C#\\es visuali\\es laboratorio\\es 3\\Calcolatrice_Avanzata\\CalcolatriceScientifica.cs",
+              "RelativeDocumentMoniker": "Calcolatrice_Avanzata\\CalcolatriceScientifica.cs",
+              "ToolTip": "C:\\Users\\Utente\\Desktop\\esercizi C#\\es visuali\\es laboratorio\\es 3\\Calcolatrice_Avanzata\\CalcolatriceScientifica.cs",
+              "RelativeToolTip": "Calcolatrice_Avanzata\\CalcolatriceScientifica.cs",
+              "ViewState": "AQIAAIcAAAAAAAAAAAAAAJgAAAAnAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-19T20:18:45.6Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CalcolatriceScientifica.cs [Progettazione]",
+              "DocumentMoniker": "C:\\Users\\Utente\\Desktop\\esercizi C#\\es visuali\\es laboratorio\\es 3\\Calcolatrice_Avanzata\\CalcolatriceScientifica.cs",
+              "RelativeDocumentMoniker": "Calcolatrice_Avanzata\\CalcolatriceScientifica.cs",
+              "ToolTip": "C:\\Users\\Utente\\Desktop\\esercizi C#\\es visuali\\es laboratorio\\es 3\\Calcolatrice_Avanzata\\CalcolatriceScientifica.cs [Progettazione]",
+              "RelativeToolTip": "Calcolatrice_Avanzata\\CalcolatriceScientifica.cs [Progettazione]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-18T21:29:09.337Z",
+              "EditorCaption": " [Progettazione]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

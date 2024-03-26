@@ -1,0 +1,38 @@
+C:\Users\giampaolo.maggiore\Desktop\3A\Visuale\Calcolatrice_Avanzata\Calcolatrice_Avanzata\bin\Debug\Calcolatrice_Avanzata.exe.config
+C:\Users\giampaolo.maggiore\Desktop\3A\Visuale\Calcolatrice_Avanzata\Calcolatrice_Avanzata\bin\Debug\Calcolatrice_Avanzata.exe
+C:\Users\giampaolo.maggiore\Desktop\3A\Visuale\Calcolatrice_Avanzata\Calcolatrice_Avanzata\bin\Debug\Calcolatrice_Avanzata.pdb
+C:\Users\giampaolo.maggiore\Desktop\3A\Visuale\Calcolatrice_Avanzata\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.csproj.AssemblyReference.cache
+C:\Users\giampaolo.maggiore\Desktop\3A\Visuale\Calcolatrice_Avanzata\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.csproj.SuggestedBindingRedirects.cache
+C:\Users\giampaolo.maggiore\Desktop\3A\Visuale\Calcolatrice_Avanzata\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.Form1.resources
+C:\Users\giampaolo.maggiore\Desktop\3A\Visuale\Calcolatrice_Avanzata\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.Properties.Resources.resources
+C:\Users\giampaolo.maggiore\Desktop\3A\Visuale\Calcolatrice_Avanzata\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.csproj.GenerateResource.cache
+C:\Users\giampaolo.maggiore\Desktop\3A\Visuale\Calcolatrice_Avanzata\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.csproj.CoreCompileInputs.cache
+C:\Users\giampaolo.maggiore\Desktop\3A\Visuale\Calcolatrice_Avanzata\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.exe
+C:\Users\giampaolo.maggiore\Desktop\3A\Visuale\Calcolatrice_Avanzata\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.pdb
+C:\Users\Utente\Downloads\Esercizio03_Calcolatrice_Avanzata\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.csproj.AssemblyReference.cache
+C:\Users\Utente\Downloads\Esercizio03_Calcolatrice_Avanzata\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.exe
+C:\Users\Utente\Downloads\Esercizio03_Calcolatrice_Avanzata\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.pdb
+C:\Users\Utente\Desktop\esercizi C#\es visuali\es laboratorio\es 3\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.csproj.AssemblyReference.cache
+C:\Users\Utente\Desktop\esercizi C#\es visuali\es laboratorio\es 3\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.exe
+C:\Users\Utente\Desktop\esercizi C#\es visuali\es laboratorio\es 3\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.pdb
+C:\Users\Utente\Desktop\esercizi C#\es visuali\es laboratorio\es 3\Calcolatrice_Avanzata\bin\Debug\Calcolatrice_Avanzata.exe.config
+C:\Users\Utente\Desktop\esercizi C#\es visuali\es laboratorio\es 3\Calcolatrice_Avanzata\bin\Debug\Calcolatrice_Avanzata.exe
+C:\Users\Utente\Desktop\esercizi C#\es visuali\es laboratorio\es 3\Calcolatrice_Avanzata\bin\Debug\Calcolatrice_Avanzata.pdb
+C:\Users\Utente\Desktop\esercizi C#\es visuali\es laboratorio\es 3\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.Properties.Resources.resources
+C:\Users\Utente\Desktop\esercizi C#\es visuali\es laboratorio\es 3\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.csproj.GenerateResource.cache
+C:\Users\Utente\Desktop\esercizi C#\es visuali\es laboratorio\es 3\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.csproj.CoreCompileInputs.cache
+C:\Users\Utente\Desktop\esercizi C#\es visuali\es laboratorio\es 3\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.FormCalcStandard.resources
+C:\Users\Utente\Desktop\esercizi C#\es visuali\es laboratorio\es 3\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.FormMenu.resources
+C:\Users\Utente\Desktop\esercizi C#\es visuali\es laboratorio\es 3\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.FormCalcScientifica.resources
+C:\Users\Utente\Desktop\es 3\Calcolatrice_Avanzata\bin\Debug\Calcolatrice_Avanzata.exe.config
+C:\Users\Utente\Desktop\es 3\Calcolatrice_Avanzata\bin\Debug\Calcolatrice_Avanzata.exe
+C:\Users\Utente\Desktop\es 3\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.csproj.AssemblyReference.cache
+C:\Users\Utente\Desktop\es 3\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.FormCalcStandard.resources
+C:\Users\Utente\Desktop\es 3\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.FormMenu.resources
+C:\Users\Utente\Desktop\es 3\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.FormCalcScientifica.resources
+C:\Users\Utente\Desktop\es 3\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.Properties.Resources.resources
+C:\Users\Utente\Desktop\es 3\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.csproj.GenerateResource.cache
+C:\Users\Utente\Desktop\es 3\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.csproj.CoreCompileInputs.cache
+C:\Users\Utente\Desktop\es 3\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.exe
+C:\Users\Utente\Desktop\es 3\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.pdb
+C:\Users\Utente\Desktop\es 3\Calcolatrice_Avanzata\bin\Debug\Calcolatrice_Avanzata.pdb
