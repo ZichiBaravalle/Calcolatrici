@@ -34,6 +34,12 @@ namespace Calcolatrice_Avanzata
                     scientifica.Show();
                     this.Hide();
                     break;
+                
+                case "SimilGeogebra":
+                    SimilGeogebra geogebra = new SimilGeogebra();
+                    geogebra.Show();
+                    this.Hide();
+                    break;
 
                 default:
                     break;

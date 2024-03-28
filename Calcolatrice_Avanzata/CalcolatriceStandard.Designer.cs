@@ -23,8 +23,8 @@
         #region Codice generato da Progettazione Windows Form
 
         /// <summary>
-        /// Metodo necessario per il supporto della finestra di progettazione. Non modificare
-        /// il contenuto del metodo con l'editor di codice.
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
@@ -376,7 +376,7 @@
             this.txtIO.Location = new System.Drawing.Point(6, 13);
             this.txtIO.Name = "txtIO";
             this.txtIO.ReadOnly = true;
-            this.txtIO.Size = new System.Drawing.Size(260, 25);
+            this.txtIO.Size = new System.Drawing.Size(260, 23);
             this.txtIO.TabIndex = 0;
             this.txtIO.Text = "0";
             this.txtIO.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -387,7 +387,7 @@
             this.lblNomeCalcolatrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.26415F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNomeCalcolatrice.Location = new System.Drawing.Point(54, 8);
             this.lblNomeCalcolatrice.Name = "lblNomeCalcolatrice";
-            this.lblNomeCalcolatrice.Size = new System.Drawing.Size(99, 25);
+            this.lblNomeCalcolatrice.Size = new System.Drawing.Size(92, 25);
             this.lblNomeCalcolatrice.TabIndex = 26;
             this.lblNomeCalcolatrice.Text = "Standard";
             // 
@@ -424,7 +424,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(296, 451);
+            this.ClientSize = new System.Drawing.Size(296, 453);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnMemoria);
             this.Controls.Add(this.btnMenu);
@@ -444,7 +444,6 @@
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion

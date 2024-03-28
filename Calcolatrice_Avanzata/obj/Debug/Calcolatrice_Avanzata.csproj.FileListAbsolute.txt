@@ -36,3 +36,16 @@ C:\Users\Utente\Desktop\es 3\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanza
 C:\Users\Utente\Desktop\es 3\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.exe
 C:\Users\Utente\Desktop\es 3\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.pdb
 C:\Users\Utente\Desktop\es 3\Calcolatrice_Avanzata\bin\Debug\Calcolatrice_Avanzata.pdb
+C:\Users\Utente\Desktop\Progetti C#\Calcolatrici-su-Visuale\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.csproj.AssemblyReference.cache
+C:\Users\Utente\Desktop\Progetti C#\Calcolatrici-su-Visuale\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.FormCalcStandard.resources
+C:\Users\Utente\Desktop\Progetti C#\Calcolatrici-su-Visuale\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.FormMenu.resources
+C:\Users\Utente\Desktop\Progetti C#\Calcolatrici-su-Visuale\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.FormCalcScientifica.resources
+C:\Users\Utente\Desktop\Progetti C#\Calcolatrici-su-Visuale\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.SimilGeogebra.resources
+C:\Users\Utente\Desktop\Progetti C#\Calcolatrici-su-Visuale\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.csproj.GenerateResource.cache
+C:\Users\Utente\Desktop\Progetti C#\Calcolatrici-su-Visuale\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.exe
+C:\Users\Utente\Desktop\Progetti C#\Calcolatrici-su-Visuale\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.pdb
+C:\Users\Utente\Desktop\Progetti C#\Calcolatrici-su-Visuale\Calcolatrice_Avanzata\bin\Debug\Calcolatrice_Avanzata.exe.config
+C:\Users\Utente\Desktop\Progetti C#\Calcolatrici-su-Visuale\Calcolatrice_Avanzata\bin\Debug\Calcolatrice_Avanzata.exe
+C:\Users\Utente\Desktop\Progetti C#\Calcolatrici-su-Visuale\Calcolatrice_Avanzata\bin\Debug\Calcolatrice_Avanzata.pdb
+C:\Users\Utente\Desktop\Progetti C#\Calcolatrici-su-Visuale\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.Properties.Resources.resources
+C:\Users\Utente\Desktop\Progetti C#\Calcolatrici-su-Visuale\Calcolatrice_Avanzata\obj\Debug\Calcolatrice_Avanzata.csproj.CoreCompileInputs.cache
