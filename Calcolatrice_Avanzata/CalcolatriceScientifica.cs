@@ -38,7 +38,7 @@ namespace Calcolatrice_Avanzata
             
             if ((contParentesi == 0 && n != "0") || parentesiChiusa)
             {
-                if (!parentesiChiusa)
+                if (!parentesiChiusa && !ugualePremuto && vetOperazioni[0].Count != 0)
                 {
                     stringaOperazione += Convert.ToString(n);
                     txtOperazioneIntera.Text = stringaOperazione;
@@ -208,11 +208,13 @@ namespace Calcolatrice_Avanzata
                         }
                     }
                 }
-                    
-                txtIO.Text = vetNumeri[0][0].ToString();
-
-                listMemoria.Items.Add(stringaOperazione);
-                listMemoria.Items.Add("= " + txtIO.Text);
+                  
+                if (vetNumeri[0].Count() != 0)
+                {
+                    txtIO.Text = vetNumeri[0][0].ToString();
+                    listMemoria.Items.Add(stringaOperazione);
+                    listMemoria.Items.Add("= " + txtIO.Text);
+                }
             }
             else if (contParentesi == 0)
                 MessageBox.Show("Prima di calcolare il risultato devi chiudere tutte le parentese aperte", "Parentesi");
@@ -371,7 +373,6 @@ namespace Calcolatrice_Avanzata
                 MessageBox.Show("Non puoi mettere una parentesi chiusa senza averne messa una aperta", "Parentesi");
         }
         
-//***********************************************************************************************************************************************************************
         
         private void btnMemoria_Click(object sender, EventArgs e)
         {
@@ -396,7 +397,7 @@ namespace Calcolatrice_Avanzata
         {
             FormMenu menu = new FormMenu();
             menu.Show();
-            this.Hide();
+            Hide();
         }
 
         private void FormCalcScientifica_Load(object sender, EventArgs e)
@@ -461,7 +462,10 @@ namespace Calcolatrice_Avanzata
                 btnCambiato5.Focus();
             }
         }
-
-//*******************************************************************************************************************************************************************************************
+        
+        private void FormCalcScientifica_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            classe.chiudiTutto();
+        }
     }
 }

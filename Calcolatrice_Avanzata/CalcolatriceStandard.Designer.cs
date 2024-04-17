@@ -438,6 +438,7 @@
             this.Name = "FormCalcStandard";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Calcolatrice Standard";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormCalcStandard_FormClosed);
             this.Load += new System.EventHandler(this.FormCalcStandard_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);

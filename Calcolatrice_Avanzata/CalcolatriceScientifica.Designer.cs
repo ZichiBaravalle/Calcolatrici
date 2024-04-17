@@ -609,6 +609,7 @@
             this.Name = "FormCalcScientifica";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Calcolatrice Scientifica";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormCalcScientifica_FormClosed);
             this.Load += new System.EventHandler(this.FormCalcScientifica_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();

@@ -167,5 +167,10 @@ namespace Calcolatrice_Avanzata
                 operazione = btn.Text;
             }
         }
+
+        private void FormCalcStandard_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            classe.chiudiTutto();
+        }
     }
 }

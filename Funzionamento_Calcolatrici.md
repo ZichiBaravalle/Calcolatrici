@@ -1,4 +1,4 @@
-# FUNZIONAMENTO CALCOLATRICI
+# FUNZIONAMENTO CALCOLATRICI (create su rider)
 ## CALCOLATRICE STANDARD
 * Classico funzionamento della calcolatrice della calcolatrice standard di windows.
 * Unico modo per inserire i numeri e operazione è schiacciando i bottoni, se si schiacciano i numeri sulla tastiera non funziona.

@@ -26,6 +26,11 @@ namespace Calcolatrice_Avanzata
                     return false;
             }
         }
+
+        public void chiudiTutto()
+        {
+            Application.Exit();
+        }
         
         public int ricercaParantesi(List<string> vet)
         {

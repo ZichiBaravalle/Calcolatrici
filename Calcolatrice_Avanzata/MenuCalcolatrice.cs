@@ -45,5 +45,11 @@ namespace Calcolatrice_Avanzata
                     break;
             }
         }
+
+        private void FormMenu_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            ClasseBottoni classe = new ClasseBottoni();
+            classe.chiudiTutto();
+        }
     }
 }
