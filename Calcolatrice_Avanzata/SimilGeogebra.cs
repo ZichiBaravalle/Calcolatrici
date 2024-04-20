@@ -12,20 +12,19 @@ namespace Calcolatrice_Avanzata
     public partial class SimilGeogebra : Form
     {
         private Form InterfacciaSimilGeogebra = new Form();
-        private Chart chart = new Chart();
-        private List<Series> serie = new List<Series>();
+        private Chart chart = new Chart(); //creazione grafico su dove disegnare
+        private List<Series> serie = new List<Series>(); //lista di serie (le serie servono per disegnare le funzioni dando dei punti con X e Y), ad ogni lista corrispondente una funzione
         
-        private Label label1 = new Label();
-        private TextBox textBox1 = new TextBox();
-        private Label label2 = new Label();
-        private TextBox textBox2 = new TextBox();
-        private Label label3 = new Label();
-        private TextBox textBox3 = new TextBox();
-        private RadioButton radioBtnFuochiX = new RadioButton();
-        private RadioButton radioBtnFuochiY = new RadioButton();
+        private Label label1 = new Label(); //li usiamo per la creazione dinamica
+        private TextBox textBox1 = new TextBox(); //li usiamo per la creazione dinamica
+        private Label label2 = new Label(); //li usiamo per la creazione dinamica
+        private TextBox textBox2 = new TextBox(); //li usiamo per la creazione dinamica
+        private Label label3 = new Label(); //li usiamo per la creazione dinamica
+        private TextBox textBox3 = new TextBox(); //li usiamo per la creazione dinamica
+        private RadioButton radioBtnFuochiX = new RadioButton(); //li usiamo per la creazione dinamica
+        private RadioButton radioBtnFuochiY = new RadioButton(); //li usiamo per la creazione dinamica
 
-        private int nFigura = 0;
-        bool cancella = false;
+        private int nFigura = 0; //corrisponde a quale figura ci troviamo in questo momento
 
         public SimilGeogebra()
         {
@@ -34,6 +33,7 @@ namespace Calcolatrice_Avanzata
 
         private void btnMenu_Click(object sender, EventArgs e)
         {
+            //per andare al menu
             FormMenu menu = new FormMenu();
             menu.Show();
             InterfacciaSimilGeogebra.Hide();
@@ -43,11 +43,12 @@ namespace Calcolatrice_Avanzata
         private void SimilGeogebra_FormClosed(object sender, FormClosedEventArgs e)
         {
             ClasseBottoni classe = new ClasseBottoni();
-            classe.chiudiTutto();
+            classe.chiudiTutto(); //chiude tutte le form
         }
 
         private void SimilGeogebra_Load(object sender, EventArgs e)
         {
+            // creo una form in modo dinamico
             Location = new Point(100, 200);
             InterfacciaSimilGeogebra.Show();
 
@@ -75,22 +76,22 @@ namespace Calcolatrice_Avanzata
             chart.Parent = InterfacciaSimilGeogebra;
             chart.Dock = DockStyle.Fill;
 
-            chart.ChartAreas.Add(new ChartArea());
-            chart.Series.Add(new Series());
+            chart.ChartAreas.Add(new ChartArea()); //aggiungiamo una nuova chart area al chart
+            chart.Series.Add(new Series()); //aggiungiamo una nuova serie al chart per stamparci la nostra funzione
             
-            serie.Add(new Series());
-            serie[nFigura].ChartType = SeriesChartType.Line;
+            serie.Add(new Series()); //aggiungiamo una nuova serie alla lista
+            serie[nFigura].ChartType = SeriesChartType.Line; //definiamo il tipo di dati della serie che stiamo creando
             
-            serie[nFigura].Points.AddXY(0, 0);
+            serie[nFigura].Points.AddXY(0, 0); //aggiungiamo un punto alla serie in posizione dentro alla lista corrispondente a nFigura
             serie[nFigura].Points.AddXY(2, 3);
             serie[nFigura].Points.AddXY(1, 4);
             serie[nFigura].Points.AddXY(0, 3);
             serie[nFigura].Points.AddXY(-1, 4);
             serie[nFigura].Points.AddXY(-2, 3);
             serie[nFigura].Points.AddXY(0, 0);
-            chart.Series[nFigura] = serie[nFigura];
+            chart.Series[nFigura] = serie[nFigura]; //facendo così assegnamo alla series di chart in posizione nFigura la serie in posizione nFigura appena caricata con tutti i punti
 
-            listBoxFormule.Items.Add(new object());
+            listBoxFormule.Items.Add(new object()); //aggiungiamo un oggetto alla lista
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -394,10 +395,10 @@ namespace Calcolatrice_Avanzata
 
         private void btnGenera_Click(object sender, EventArgs e)
         {
-            double max, min;
-            double a, b, c;
-            double m, q;
-            double r, Cy, Cx, Vx, Vy;
+            double max, min; //variabili di appoggio per riuscire a disegnare la funzione
+            double a, b, c; //variabili di appoggio per la parabola, cerchio, ellisse e iperbole
+            double m, q; //variabili di appoggio per la retta
+            double r, Cy, Cx, Vx, Vy; //variabili di appoggio (raggio, centro e vertice)
             
             if (comboBoxFormule.SelectedIndex == -1)
             {
@@ -741,7 +742,7 @@ namespace Calcolatrice_Avanzata
                         chart.ChartAreas[0].AxisY.Minimum = min;
                         chart.ChartAreas[0].AxisY.Maximum = max;
                         
-                        if (serie[nFigura].Points.Count > 0)
+                        if (serie[nFigura].Points.Count > 0) //se la serie è già stata caricata andiamo a pulirla
                             serie[nFigura].Points.Clear();
                         
                         /*double a = 2; // distanza dei fuochi dall'origine lungo l'asse y
@@ -817,14 +818,15 @@ namespace Calcolatrice_Avanzata
                             }
                         }
                         
-                        chart.Series[nFigura] = serie[nFigura];
+                        chart.Series[nFigura] = serie[nFigura]; //assegnamo alla serie di chart in posizione nFigura la serie in posizione nFigura appena caricata con tutti i punti
                         break;
                 }
             }
         }
 
         private void btnReset_Click(object sender, EventArgs e)
-        {
+        { 
+            //reset per tutti i campi ancora da caricare 
             label1.Visible = false;
             label2.Visible = false;
             label3.Visible = false;
