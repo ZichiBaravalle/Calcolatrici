@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 
 using System.Windows.Forms.DataVisualization.Charting;
+using Timer = System.Windows.Forms.Timer;
 
 namespace Calcolatrice_Avanzata
 {
@@ -10,7 +13,7 @@ namespace Calcolatrice_Avanzata
     {
         private Form InterfacciaSimilGeogebra = new Form();
         private Chart chart = new Chart();
-        private Series series = new Series();
+        private List<Series> serie = new List<Series>();
         
         private Label label1 = new Label();
         private TextBox textBox1 = new TextBox();
@@ -18,6 +21,11 @@ namespace Calcolatrice_Avanzata
         private TextBox textBox2 = new TextBox();
         private Label label3 = new Label();
         private TextBox textBox3 = new TextBox();
+        private RadioButton radioBtnFuochiX = new RadioButton();
+        private RadioButton radioBtnFuochiY = new RadioButton();
+
+        private int nFigura = 0;
+        bool cancella = false;
 
         public SimilGeogebra()
         {
@@ -68,16 +76,21 @@ namespace Calcolatrice_Avanzata
             chart.Dock = DockStyle.Fill;
 
             chart.ChartAreas.Add(new ChartArea());
+            chart.Series.Add(new Series());
+            
+            serie.Add(new Series());
+            serie[nFigura].ChartType = SeriesChartType.Line;
+            
+            serie[nFigura].Points.AddXY(0, 0);
+            serie[nFigura].Points.AddXY(2, 3);
+            serie[nFigura].Points.AddXY(1, 4);
+            serie[nFigura].Points.AddXY(0, 3);
+            serie[nFigura].Points.AddXY(-1, 4);
+            serie[nFigura].Points.AddXY(-2, 3);
+            serie[nFigura].Points.AddXY(0, 0);
+            chart.Series[nFigura] = serie[nFigura];
 
-            series.ChartType = SeriesChartType.Line;
-            series.Points.AddXY(0, 0);
-            series.Points.AddXY(2, 3);
-            series.Points.AddXY(1, 4);
-            series.Points.AddXY(0, 3);
-            series.Points.AddXY(-1, 4);
-            series.Points.AddXY(-2, 3);
-            series.Points.AddXY(0, 0);
-            chart.Series.Add(series);
+            listBoxFormule.Items.Add(new object());
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -85,6 +98,17 @@ namespace Calcolatrice_Avanzata
             textBox1.Text = "";
             textBox2.Text = "";
             textBox3.Text = "";
+
+            if (comboBoxFormule.SelectedIndex == 5 || comboBoxFormule.SelectedIndex == 6)
+            {
+                radioBtnFuochiX.Enabled = true;
+                radioBtnFuochiY.Enabled = true;
+            }
+            else
+            {
+                radioBtnFuochiX.Enabled = false;
+                radioBtnFuochiY.Enabled = false;
+            }
             
             switch (comboBoxFormule.SelectedIndex)
             {
@@ -262,6 +286,93 @@ namespace Calcolatrice_Avanzata
                     label3.Text = "c";
                     label3.Visible = true;
                     break;
+                
+                case 4: //ellisse
+                    this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.label1.Location = new System.Drawing.Point(128, 125);
+                    this.label1.Name = "label1";
+                    this.label1.Size = new System.Drawing.Size(52, 36);
+                    this.label1.TabIndex = 35;
+                    this.label1.Text = "a²";
+                    label1.Visible = true;
+                    
+                    this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.textBox1.Location = new System.Drawing.Point(186, 122);
+                    this.textBox1.Name = "txtA";
+                    this.textBox1.Size = new System.Drawing.Size(100, 38);
+                    this.textBox1.TabIndex = 36;
+                    textBox1.Visible = true;
+                    
+                    this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.label2.Location = new System.Drawing.Point(373, 125);
+                    this.label2.Size = new System.Drawing.Size(52, 36);
+                    this.label2.TabIndex = 37;
+                    this.label2.Text = "b²";
+                    label2.Visible = true;
+                    
+                    this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.textBox2.Location = new System.Drawing.Point(431, 122);
+                    this.textBox2.Name = "txtB";
+                    this.textBox2.Size = new System.Drawing.Size(100, 38);
+                    this.textBox2.TabIndex = 38;
+                    textBox2.Visible = true;
+
+                    label3.Visible = false;
+                    textBox3.Visible = false;
+                    break;
+                
+                case 5: //iperbole
+                    this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.label1.Location = new System.Drawing.Point(128, 125);
+                    this.label1.Name = "label1";
+                    this.label1.Size = new System.Drawing.Size(52, 36);
+                    this.label1.TabIndex = 35;
+                    this.label1.Text = "a²";
+                    label1.Visible = true;
+                    
+                    this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.textBox1.Location = new System.Drawing.Point(186, 122);
+                    this.textBox1.Name = "txtA";
+                    this.textBox1.Size = new System.Drawing.Size(100, 38);
+                    this.textBox1.TabIndex = 36;
+                    textBox1.Visible = true;
+                    
+                    this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.label2.Location = new System.Drawing.Point(373, 125);
+                    this.label2.Size = new System.Drawing.Size(52, 36);
+                    this.label2.TabIndex = 37;
+                    this.label2.Text = "b²";
+                    label2.Visible = true;
+                    
+                    this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.textBox2.Location = new System.Drawing.Point(431, 122);
+                    this.textBox2.Name = "txtB";
+                    this.textBox2.Size = new System.Drawing.Size(100, 38);
+                    this.textBox2.TabIndex = 38;
+                    textBox2.Visible = true;
+                    
+                    this.radioBtnFuochiX.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.radioBtnFuochiX.Location = new System.Drawing.Point(105, 250);
+                    this.radioBtnFuochiX.Name = "radioBtnFuochiX";
+                    this.radioBtnFuochiX.Size = new System.Drawing.Size(183, 24);
+                    this.radioBtnFuochiX.TabIndex = 52;
+                    this.radioBtnFuochiX.TabStop = true;
+                    this.radioBtnFuochiX.Text = "Fuochi sull\'asse X";
+                    this.radioBtnFuochiX.UseVisualStyleBackColor = true;
+                    
+                    this.radioBtnFuochiY.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.radioBtnFuochiY.Location = new System.Drawing.Point(372, 250);
+                    this.radioBtnFuochiY.Name = "radioBtnFuochiY";
+                    this.radioBtnFuochiY.Size = new System.Drawing.Size(183, 24);
+                    this.radioBtnFuochiY.TabIndex = 53;
+                    this.radioBtnFuochiY.TabStop = true;
+                    this.radioBtnFuochiY.Text = "Fuochi sull\'asse Y";
+                    this.radioBtnFuochiY.UseVisualStyleBackColor = true;
+
+                    radioBtnFuochiX.Checked = true;
+                    label3.Visible = false;
+                    textBox3.Visible = false;
+                    break;
             }
 
             if (Controls.Find("label1", true).Length == 0)
@@ -270,6 +381,8 @@ namespace Calcolatrice_Avanzata
                 Controls.Add(label2);
                 Controls.Add(textBox1);
                 Controls.Add(textBox2);
+                Controls.Add(radioBtnFuochiX);
+                Controls.Add(radioBtnFuochiY);
             }
             
             if (Controls.Find("label3", true).Length == 0)
@@ -320,23 +433,20 @@ namespace Calcolatrice_Avanzata
                             txtMin.Focus();
                             return;
                         }
-
-                        chart.ChartAreas[0].AxisX.IsStartedFromZero = true;
-                        chart.ChartAreas[0].AxisY.IsStartedFromZero = true;
                         
                         chart.ChartAreas[0].AxisX.Minimum = min;
                         chart.ChartAreas[0].AxisX.Maximum = max;
+                        
+                        listBoxFormule.Items[nFigura] = "y = " + m + (q >= 0 ? "x + " : "x ") + q;
 
-                        series.Points.Clear();
-                        chart.Series.Clear();
+                        if (serie[nFigura].Points.Count > 0)
+                            serie[nFigura].Points.Clear();
                         
                         for (double x = min; x <= max; x++)
-                            series.Points.AddXY(x, m * x + q);
+                            serie[nFigura].Points.AddXY(x, m * x + q);
                         
-                        chart.Series.Add(series);
+                        chart.Series[nFigura] = serie[nFigura];
                         
-                        if (!listBoxFormule.Items.Contains("y = " + m + (q >= 0 ? "x + " : "x ") + q))
-                            listBoxFormule.Items.Add("y = " + m + (q >= 0 ? "x + " : "x ") + q);
                         break;
                     
                     case 1: //parabola
@@ -379,9 +489,6 @@ namespace Calcolatrice_Avanzata
                         
                         Vx = -(b / (2 * a));
                         Vy = -(Math.Pow(b, 2) - 4 * a * c) / (4 * a);
-
-                        chart.ChartAreas[0].AxisX.IsStartedFromZero = true;
-                        chart.ChartAreas[0].AxisY.IsStartedFromZero = true;
                         
                         chart.ChartAreas[0].AxisX.Minimum = Vx + min;
                         chart.ChartAreas[0].AxisX.Maximum = Vx + max;
@@ -389,29 +496,18 @@ namespace Calcolatrice_Avanzata
                         chart.ChartAreas[0].AxisY.Minimum = Vy + min;
                         chart.ChartAreas[0].AxisY.Maximum = Vy + max;
 
-                        series.Points.Clear();
-                        chart.Series.Clear();
+                        listBoxFormule.Items[nFigura] = "y = " + a + (b > 0 || c > 0 ? "x² + " : "x² ") + (b != 0 ? b + (c > 0 ? b + "x + " : "x ") : "") + (c != 0 ? c.ToString() : "");
+                        
+                        if (serie[nFigura].Points.Count > 0)
+                            serie[nFigura].Points.Clear();
                         
                         for (double x = min; x <= max; x += 0.1)
-                            series.Points.AddXY(x, x * x * a + b * x + c);
+                            serie[nFigura].Points.AddXY(x, x * x * a + b * x + c);
                         
-                        chart.Series.Add(series);
-                        
-                        if (!listBoxFormule.Items.Contains("y = " 
-                                                           + a + 
-                                                           (b > 0 || c > 0 ? "x^2 + " : "x^2 ") 
-                                                           +
-                                                           (b != 0 ? b + (c > 0 ? "x + " : "x ") : "") +
-                                                           (c != 0 ? c.ToString() : "")))
-                            listBoxFormule.Items.Add("y = " 
-                                                     + a + 
-                                                     (b > 0 || c > 0 ? "x^2 + " : "x^2 ") 
-                                                     +
-                                                     (b != 0 ? b + (c > 0 ? b + "x + " : "x ") : "") +
-                                                     (c != 0 ? c.ToString() : ""));
+                        chart.Series[nFigura] = serie[nFigura];
                         break;
                     
-                    case 2: //parabola quadrilatera
+                    case 2: //parabola coricata
                         if (!double.TryParse(textBox1.Text, out a))
                         {
                             MessageBox.Show("Inserisci correttamente il valore di a", "parametro a");
@@ -451,9 +547,6 @@ namespace Calcolatrice_Avanzata
                         
                         Vx = -(b / (2 * a));
                         Vy = -(Math.Pow(b, 2) - 4 * a * c) / (4 * a);
-
-                        chart.ChartAreas[0].AxisX.IsStartedFromZero = true;
-                        chart.ChartAreas[0].AxisY.IsStartedFromZero = true;
                         
                         chart.ChartAreas[0].AxisX.Minimum = Vx + min;
                         chart.ChartAreas[0].AxisX.Maximum = Vx + max;
@@ -461,26 +554,15 @@ namespace Calcolatrice_Avanzata
                         chart.ChartAreas[0].AxisY.Minimum = Vy + min;
                         chart.ChartAreas[0].AxisY.Maximum = Vy + max;
 
-                        series.Points.Clear();
-                        chart.Series.Clear();
+                        listBoxFormule.Items[nFigura] = "x = " + a + (b > 0 || c > 0 ? "y² + " : "y² ") + (b != 0 ? b + (c > 0 ? "y + " : "y ") : "") + (c != 0 ? c.ToString() : "");
+                        
+                        if (serie[nFigura].Points.Count > 0)
+                            serie[nFigura].Points.Clear();
                         
                         for (double x = min; x <= max; x += 0.1)
-                            series.Points.AddXY(x * x * a + b * x + c, x);
+                            serie[nFigura].Points.AddXY(x * x * a + b * x + c, x);
                         
-                        chart.Series.Add(series);
-                        
-                        if (!listBoxFormule.Items.Contains("x = " 
-                                                           + a + 
-                                                           (b > 0 || c > 0 ? "y^2 + " : "y^2 ") 
-                                                           +
-                                                           (b != 0 ? b + (c > 0 ? "y + " : "y ") : "") +
-                                                           (c != 0 ? c.ToString() : "")))
-                            listBoxFormule.Items.Add("x = " 
-                                                     + a + 
-                                                     (b > 0 || c > 0 ? "y^2 + " : "y^2 ") 
-                                                     +
-                                                     (b != 0 ? b + (c > 0 ? "y + " : "y ") : "") +
-                                                     (c != 0 ? c.ToString() : ""));
+                        chart.Series[nFigura] = serie[nFigura];
                         break;
                     
                     case 3: //circonferenza
@@ -531,9 +613,6 @@ namespace Calcolatrice_Avanzata
                             return;
                         }
 
-                        chart.ChartAreas[0].AxisX.IsStartedFromZero = true;
-                        chart.ChartAreas[0].AxisY.IsStartedFromZero = true;
-
                         Cx = -(a / 2);
                         Cy = -(b / 2);
                         
@@ -542,34 +621,203 @@ namespace Calcolatrice_Avanzata
                         
                         chart.ChartAreas[0].AxisY.Minimum = Cy + min;
                         chart.ChartAreas[0].AxisY.Maximum = Cy + max;
+
+                        listBoxFormule.Items[nFigura] = (a > 0 || b > 0 || c > 0 ? "x² + y² + " : "x² + y² ") + (a != 0 ? a + (b > 0 ? "x + " : "x ") : "") + (b != 0 ? b + (c > 0 ? "y + " : "y ") : "") + (c == 0 ? "" : c.ToString()) + " = 0";
                         
-                        series.Points.Clear();
-                        chart.Series.Clear();
+                        if (serie[nFigura].Points.Count > 0)
+                            serie[nFigura].Points.Clear();
                         
                         for (double angle = 0; angle <= 360; angle += 0.01)
                         {
                             double radians = angle * Math.PI / 180;
                             double x = Cx + r * Math.Cos(radians);
                             double y = Cy + r * Math.Sin(radians);
-                            series.Points.AddXY(x, y);
+                            serie[nFigura].Points.AddXY(x, y);
                         }
                         
-                        chart.Series.Add(series);
+                        chart.Series[nFigura] = serie[nFigura];
+                        break;
+                    
+                    case 4: //ellisse
+                        if (!double.TryParse(textBox1.Text, out a) || a <= 0)
+                        {
+                            MessageBox.Show("Inserisci correttamente il valore di a, positivo e diverso da 0", "parametro a");
+                            textBox1.Focus();
+                            return;
+                        }
+                        a = Math.Sqrt(a);
                         
-                        if (!listBoxFormule.Items.Contains((a > 0 || b > 0 || c > 0 ? "x^2 + y^2 + " : "x^2 + y^2 ")
-                                                           +
-                                                           (a != 0 ? a + (b > 0 ? "x + " : "x ") : "") 
-                                                           +
-                                                           (b != 0 ? b + (c > 0 ? "y + " : "y ") : "") 
-                                                           + (c == 0 ? "" : c.ToString()) + 
-                                                           " = 0"))
-                            listBoxFormule.Items.Add((a > 0 || b > 0 || c > 0 ? "x^2 + y^2 + " : "x^2 + y^2 ")
-                                                     +
-                                                     (a != 0 ? a + (b > 0 ? "x + " : "x ") : "") 
-                                                     + 
-                                                     (b != 0 ? b + (c > 0 ? "y + " : "y ") : "") 
-                                                     + (c == 0 ? "" : c.ToString()) + 
-                                                     " = 0");
+                        if (!double.TryParse(textBox2.Text, out b) || b <= 0)
+                        {
+                            MessageBox.Show("Inserisci correttamente il valore di b, positivo e diverso da 0", "parametro b");
+                            textBox2.Focus();
+                            return;
+                        }
+                        b = Math.Sqrt(b);
+
+                        if (a == b)
+                        {
+                            MessageBox.Show("Inserisci correttamente il valore di a diverso da b", "parametri a, b");
+                            textBox1.Focus();
+                            return;
+                        }
+                        
+                        if (!double.TryParse(txtMax.Text, out max))
+                        {
+                            MessageBox.Show("Inserisci correttamente il valore di max", "parametro max");
+                            txtMax.Focus();
+                            return;
+                        }
+                        if (!double.TryParse(txtMin.Text, out min))
+                        {
+                            MessageBox.Show("Inserisci correttamente il valore di min", "parametro min");
+                            txtMin.Focus();
+                            return;
+                        }
+                        
+                        chart.ChartAreas[0].AxisX.Minimum = min;
+                        chart.ChartAreas[0].AxisX.Maximum = max;
+                        
+                        chart.ChartAreas[0].AxisY.Minimum = min;
+                        chart.ChartAreas[0].AxisY.Maximum = max;
+                        
+                        listBoxFormule.Items[nFigura] = "x²/" + a + "² + y²/" + b + "² = 1";
+                        
+                        if (serie[nFigura].Points.Count > 0)
+                            serie[nFigura].Points.Clear();
+                        
+                        
+                        for (double angle = 0; angle <= 360; angle += 0.01)
+                        {
+                            double radians = angle * Math.PI / 180;
+                            double x = a * Math.Cos(radians);
+                            double y = b * Math.Sin(radians);
+                            serie[nFigura].Points.AddXY(x, y);
+                        }
+                        
+                        chart.Series[nFigura] = serie[nFigura];
+                        break;
+                    
+                    case 5: //iperebole
+                        if (!double.TryParse(textBox1.Text, out a) || a <= 0)
+                        {
+                            MessageBox.Show("Inserisci correttamente il valore di a, positivo e diverso da 0", "parametro a");
+                            textBox1.Focus();
+                            return;
+                        }
+                        a = Math.Sqrt(a);
+                        
+                        if (!double.TryParse(textBox2.Text, out b) || b <= 0)
+                        {
+                            MessageBox.Show("Inserisci correttamente il valore di b, positivo e diverso da 0", "parametro b");
+                            textBox2.Focus();
+                            return;
+                        }
+                        b = Math.Sqrt(b);
+
+                        if (a == b)
+                        {
+                            MessageBox.Show("Inserisci correttamente il valore di a diverso da b", "parametri a, b");
+                            textBox1.Focus();
+                            return;
+                        }
+                        
+                        if (!double.TryParse(txtMax.Text, out max))
+                        {
+                            MessageBox.Show("Inserisci correttamente il valore di max", "parametro max");
+                            txtMax.Focus();
+                            return;
+                        }
+                        if (!double.TryParse(txtMin.Text, out min))
+                        {
+                            MessageBox.Show("Inserisci correttamente il valore di min", "parametro min");
+                            txtMin.Focus();
+                            return;
+                        }
+                        
+                        chart.ChartAreas[0].AxisX.Minimum = min;
+                        chart.ChartAreas[0].AxisX.Maximum = max;
+                        
+                        chart.ChartAreas[0].AxisY.Minimum = min;
+                        chart.ChartAreas[0].AxisY.Maximum = max;
+                        
+                        if (serie[nFigura].Points.Count > 0)
+                            serie[nFigura].Points.Clear();
+                        
+                        /*double a = 2; // distanza dei fuochi dall'origine lungo l'asse y
+                        double b = 3; // distanza della retta asintotica dall'origine lungo l'asse x
+
+                        for (double x = 0.1; x <= 10; x += 0.1)
+                        {
+                            double y1 = Math.Sqrt(Math.Pow(a, 2) * (1 - Math.Pow(x / b, 2)));
+                            double y2 = -Math.Sqrt(Math.Pow(a, 2) * (1 - Math.Pow(x / b, 2)));
+                            
+                            Console.WriteLine("x = " + x + ", y1 = " + y1 + ", y2 = " + y2);
+                        }*/
+                        
+                        if (radioBtnFuochiX.Checked)
+                        {
+                            listBoxFormule.Items[nFigura] = "x²/" + a + "² - y²/" + b + "² = 1";
+                            
+                            /*for (double x = min; x <= max; x += 0.1)
+                            {
+                                double y = Math.Sqrt(Math.Pow(a, 2) * (1 - Math.Pow(x / b, 2)));
+                                serie[nFigura].Points.AddXY(x, y);
+                            }*/
+                            
+                            for (double theta = -Math.PI; theta <= Math.PI; theta += 0.1)
+                            {
+                                double x = a * Math.Cosh(theta);
+                                double y = b * Math.Sinh(theta);
+
+                                if (Math.Abs(x / a) >= 1 || Math.Abs(y / b) >= 1)
+                                {
+                                    serie[nFigura].Points.AddXY(x, y);
+                                }
+                            }
+                            
+                            for (double theta = -2 * Math.PI; theta <= 2 * Math.PI; theta += 0.1)
+                            {
+                                double x = a * Math.Cosh(theta);
+                                if (theta < 0)
+                                {
+                                    x = -x;
+                                }
+
+                                double y = b * Math.Sinh(theta);
+
+                                if (Math.Abs(y / b) > 1)
+                                {
+                                    serie[nFigura].Points.AddXY(x, y);
+                                }
+                            }
+                            
+                            /*for (double x = min; x <= max; x += 0.1)
+                            {
+                                double y = -Math.Sqrt(Math.Pow(a, 2) * (1 - Math.Pow(x / b, 2)));
+                                serie[nFigura].Points.AddXY(x, y);
+                            }*/
+                        }
+                        else
+                        {
+                            listBoxFormule.Items[nFigura] = "x²/" + a + "² - y²/" + b + "² = -1";
+
+                            for (double x = min; x <= max; x += 0.1)
+                            {
+                                double y = Math.Sqrt(Math.Pow(a, 2) +
+                                                      (Math.Pow(a, 2) / Math.Pow(b, 2)) * Math.Pow(x, 2));
+                                serie[nFigura].Points.AddXY(x, y);
+                            }
+
+                            for (double x = min; x <= max; x++)
+                            {
+                                double y = -Math.Sqrt(Math.Pow(a, 2) +
+                                                       (Math.Pow(a, 2) / Math.Pow(b, 2)) * Math.Pow(x, 2));
+                                serie[nFigura].Points.AddXY(x, y);
+                            }
+                        }
+                        
+                        chart.Series[nFigura] = serie[nFigura];
                         break;
                 }
             }
@@ -596,19 +844,25 @@ namespace Calcolatrice_Avanzata
             listBoxFormule.Items.Clear();
             
             chart.Series.Clear();
-            series.Points.Clear();
+            serie[nFigura].Points.Clear();
+            chart.ChartAreas.Clear();
 
-            chart.ChartAreas[0].AxisX.Maximum = 3;
-            chart.ChartAreas[0].AxisX.Minimum = -3;
+            nFigura = 0;
+
+            chart.ChartAreas[nFigura].AxisX.Maximum = 3;
+            chart.ChartAreas[nFigura].AxisX.Minimum = -3;
             
-            series.Points.AddXY(0, 0);
-            series.Points.AddXY(2, 3);
-            series.Points.AddXY(1, 4);
-            series.Points.AddXY(0, 3);
-            series.Points.AddXY(-1, 4);
-            series.Points.AddXY(-2, 3);
-            series.Points.AddXY(0, 0);
-            chart.Series.Add(series);
+            chart.ChartAreas[nFigura].AxisY.Minimum = 0;
+            chart.ChartAreas[nFigura].AxisY.Maximum = 5;
+            
+            serie[nFigura].Points.AddXY(0, 0);
+            serie[nFigura].Points.AddXY(2, 3);
+            serie[nFigura].Points.AddXY(1, 4);
+            serie[nFigura].Points.AddXY(0, 3);
+            serie[nFigura].Points.AddXY(-1, 4);
+            serie[nFigura].Points.AddXY(-2, 3);
+            serie[nFigura].Points.AddXY(0, 0);
+            chart.Series.Add(serie[nFigura]);
 
             comboBoxFormule.SelectedIndex = -1;
         }

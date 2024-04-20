@@ -51,7 +51,7 @@ namespace Calcolatrice_Avanzata
             // 
             this.comboBoxFormule.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxFormule.FormattingEnabled = true;
-            this.comboBoxFormule.Items.AddRange(new object[] { "RETTA", "PARABOLA", "PARABOLA CORICATA", "CIRCONFERENZA", "ELLISSE FUOCHI ASSE X", "ELLISSE FUOCHI ASSE Y", "IPERBOLE FUOCHI ASSE X", "IPERBOLE FUOCHI ASSE Y", "IPERBOLE QUADRILATERA" });
+            this.comboBoxFormule.Items.AddRange(new object[] { "RETTA", "PARABOLA", "PARABOLA CORICATA", "CIRCONFERENZA", "ELLISSE", "IPERBOLE", "IPERBOLE QUADRILATERA" });
             this.comboBoxFormule.Location = new System.Drawing.Point(182, 28);
             this.comboBoxFormule.Name = "comboBoxFormule";
             this.comboBoxFormule.Size = new System.Drawing.Size(287, 28);
