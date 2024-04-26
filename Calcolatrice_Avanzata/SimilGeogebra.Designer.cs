@@ -44,6 +44,9 @@ namespace Calcolatrice_Avanzata
             this.btnGenera = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.btnMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.gestioneFunzioniToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aggiungiFiguraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.eliminaFunzioneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -145,7 +148,7 @@ namespace Calcolatrice_Avanzata
             // 
             // menuStrip1
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.btnMenu });
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.btnMenu, this.gestioneFunzioniToolStripMenuItem });
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
@@ -160,6 +163,27 @@ namespace Calcolatrice_Avanzata
             this.btnMenu.Size = new System.Drawing.Size(53, 21);
             this.btnMenu.Text = "Menù";
             this.btnMenu.Click += new System.EventHandler(this.btnMenu_Click);
+            // 
+            // gestioneFunzioniToolStripMenuItem
+            // 
+            this.gestioneFunzioniToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.aggiungiFiguraToolStripMenuItem, this.eliminaFunzioneToolStripMenuItem });
+            this.gestioneFunzioniToolStripMenuItem.Name = "gestioneFunzioniToolStripMenuItem";
+            this.gestioneFunzioniToolStripMenuItem.Size = new System.Drawing.Size(113, 21);
+            this.gestioneFunzioniToolStripMenuItem.Text = "Gestione Funzioni";
+            // 
+            // aggiungiFiguraToolStripMenuItem
+            // 
+            this.aggiungiFiguraToolStripMenuItem.Name = "aggiungiFiguraToolStripMenuItem";
+            this.aggiungiFiguraToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.aggiungiFiguraToolStripMenuItem.Text = "Aggiungi Funzione";
+            this.aggiungiFiguraToolStripMenuItem.Click += new System.EventHandler(this.aggiungiFiguraToolStripMenuItem_Click);
+            // 
+            // eliminaFunzioneToolStripMenuItem
+            // 
+            this.eliminaFunzioneToolStripMenuItem.Name = "eliminaFunzioneToolStripMenuItem";
+            this.eliminaFunzioneToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.eliminaFunzioneToolStripMenuItem.Text = "Elimina Funzione";
+            this.eliminaFunzioneToolStripMenuItem.Click += new System.EventHandler(this.eliminaFunzioneToolStripMenuItem_Click);
             // 
             // SimilGeogebra
             // 
@@ -194,6 +218,11 @@ namespace Calcolatrice_Avanzata
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private System.Windows.Forms.ToolStripMenuItem eliminaFunzioneToolStripMenuItem;
+
+        private System.Windows.Forms.ToolStripMenuItem gestioneFunzioniToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aggiungiFiguraToolStripMenuItem;
 
         private System.Windows.Forms.MenuStrip menuStrip1;
 

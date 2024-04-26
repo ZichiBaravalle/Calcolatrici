@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Threading;
+using System.Windows.Input;
 using System.Windows.Forms;
-
 using System.Windows.Forms.DataVisualization.Charting;
-using Timer = System.Windows.Forms.Timer;
+using Microsoft.VisualBasic;
 
 namespace Calcolatrice_Avanzata
 {
     public partial class SimilGeogebra : Form
     {
+        private Random rnd = new Random();
+        
         private Form InterfacciaSimilGeogebra = new Form();
         private Chart chart = new Chart(); //creazione grafico su dove disegnare
         private List<Series> serie = new List<Series>(); //lista di serie (le serie servono per disegnare le funzioni dando dei punti con X e Y), ad ogni lista corrispondente una funzione
@@ -21,10 +22,13 @@ namespace Calcolatrice_Avanzata
         private TextBox textBox2 = new TextBox(); //li usiamo per la creazione dinamica
         private Label label3 = new Label(); //li usiamo per la creazione dinamica
         private TextBox textBox3 = new TextBox(); //li usiamo per la creazione dinamica
+        private Label lblVettoreDiSpostamento = new Label(); //li usiamo per la creazione dinamica
         private RadioButton radioBtnFuochiX = new RadioButton(); //li usiamo per la creazione dinamica
         private RadioButton radioBtnFuochiY = new RadioButton(); //li usiamo per la creazione dinamica
 
         private int nFigura = 0; //corrisponde a quale figura ci troviamo in questo momento
+        private bool iperbole = false; //variabile di appoggio per dire se abbiamo un'iperbole oppure no
+        private List<int> posizioniIperbole = new List<int>();
 
         public SimilGeogebra()
         {
@@ -81,6 +85,7 @@ namespace Calcolatrice_Avanzata
             
             serie.Add(new Series()); //aggiungiamo una nuova serie alla lista
             serie[nFigura].ChartType = SeriesChartType.Line; //definiamo il tipo di dati della serie che stiamo creando
+            serie[nFigura].Color = Color.Black;
             
             serie[nFigura].Points.AddXY(0, 0); //aggiungiamo un punto alla serie in posizione dentro alla lista corrispondente a nFigura
             serie[nFigura].Points.AddXY(2, 3);
@@ -91,7 +96,7 @@ namespace Calcolatrice_Avanzata
             serie[nFigura].Points.AddXY(0, 0);
             chart.Series[nFigura] = serie[nFigura]; //facendo così assegnamo alla series di chart in posizione nFigura la serie in posizione nFigura appena caricata con tutti i punti
 
-            listBoxFormule.Items.Add(new object()); //aggiungiamo un oggetto alla lista
+            listBoxFormule.Items.Add(""); //aggiungiamo un oggetto alla lista
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -102,13 +107,13 @@ namespace Calcolatrice_Avanzata
 
             if (comboBoxFormule.SelectedIndex == 5 || comboBoxFormule.SelectedIndex == 6)
             {
-                radioBtnFuochiX.Enabled = true;
-                radioBtnFuochiY.Enabled = true;
+                radioBtnFuochiX.Visible = true;
+                radioBtnFuochiY.Visible = true;
             }
             else
             {
-                radioBtnFuochiX.Enabled = false;
-                radioBtnFuochiY.Enabled = false;
+                radioBtnFuochiX.Visible = false;
+                radioBtnFuochiY.Visible = false;
             }
             
             switch (comboBoxFormule.SelectedIndex)
@@ -435,6 +440,15 @@ namespace Calcolatrice_Avanzata
                             return;
                         }
                         
+                        if (iperbole) //se abbiamo una iperbole e vogliamo disegnare un'altra funzione al suo posto allora dobbiamo cancellare la serie che contiene la seconda parte di iperbole
+                        {
+                            serie.RemoveAt(nFigura + 1);
+                            chart.Series.RemoveAt(nFigura + 1);
+                            posizioniIperbole.RemoveAt(nFigura);
+                            posizioniIperbole.RemoveAt(nFigura + 1);
+                            iperbole = false;
+                        }
+                        
                         chart.ChartAreas[0].AxisX.Minimum = min;
                         chart.ChartAreas[0].AxisX.Maximum = max;
                         
@@ -486,6 +500,15 @@ namespace Calcolatrice_Avanzata
                             MessageBox.Show("Inserisci correttamente il valore di min", "parametro min");
                             txtMin.Focus();
                             return;
+                        }
+                        
+                        if (iperbole) //se abbiamo una iperbole e vogliamo disegnare un'altra funzione al suo posto allora dobbiamo cancellare la serie che contiene la seconda parte di iperbole
+                        {
+                            serie.RemoveAt(nFigura + 1);
+                            chart.Series.RemoveAt(nFigura + 1);
+                            posizioniIperbole.RemoveAt(nFigura);
+                            posizioniIperbole.RemoveAt(nFigura + 1);
+                            iperbole = false;
                         }
                         
                         Vx = -(b / (2 * a));
@@ -544,6 +567,15 @@ namespace Calcolatrice_Avanzata
                             MessageBox.Show("Inserisci correttamente il valore di min", "parametro min");
                             txtMin.Focus();
                             return;
+                        }
+                        
+                        if (iperbole) //se abbiamo una iperbole e vogliamo disegnare un'altra funzione al suo posto allora dobbiamo cancellare la serie che contiene la seconda parte di iperbole
+                        {
+                            serie.RemoveAt(nFigura + 1);
+                            chart.Series.RemoveAt(nFigura + 1);
+                            posizioniIperbole.RemoveAt(nFigura);
+                            posizioniIperbole.RemoveAt(nFigura + 1);
+                            iperbole = false;
                         }
                         
                         Vx = -(b / (2 * a));
@@ -613,6 +645,15 @@ namespace Calcolatrice_Avanzata
                             MessageBox.Show("Raggio imposibile da calcolare. Errore: " + ex.Message, "parametro raggio");
                             return;
                         }
+                        
+                        if (iperbole) //se abbiamo una iperbole e vogliamo disegnare un'altra funzione al suo posto allora dobbiamo cancellare la serie che contiene la seconda parte di iperbole
+                        {
+                            serie.RemoveAt(nFigura + 1);
+                            chart.Series.RemoveAt(nFigura + 1);
+                            posizioniIperbole.RemoveAt(nFigura);
+                            posizioniIperbole.RemoveAt(nFigura + 1);
+                            iperbole = false;
+                        }
 
                         Cx = -(a / 2);
                         Cy = -(b / 2);
@@ -674,6 +715,15 @@ namespace Calcolatrice_Avanzata
                             MessageBox.Show("Inserisci correttamente il valore di min", "parametro min");
                             txtMin.Focus();
                             return;
+                        }
+                        
+                        if (iperbole) //se abbiamo una iperbole e vogliamo disegnare un'altra funzione al suo posto allora dobbiamo cancellare la serie che contiene la seconda parte di iperbole
+                        {
+                            serie.RemoveAt(nFigura + 1);
+                            chart.Series.RemoveAt(nFigura + 1);
+                            posizioniIperbole.RemoveAt(nFigura);
+                            posizioniIperbole.RemoveAt(nFigura + 1);
+                            iperbole = false;
                         }
                         
                         chart.ChartAreas[0].AxisX.Minimum = min;
@@ -744,27 +794,21 @@ namespace Calcolatrice_Avanzata
                         
                         if (serie[nFigura].Points.Count > 0) //se la serie è già stata caricata andiamo a pulirla
                             serie[nFigura].Points.Clear();
-                        
-                        /*double a = 2; // distanza dei fuochi dall'origine lungo l'asse y
-                        double b = 3; // distanza della retta asintotica dall'origine lungo l'asse x
 
-                        for (double x = 0.1; x <= 10; x += 0.1)
+                        if (!iperbole) //se stiamo creando una iperbole ed è la prima che la creiamo allora dobbiamo creare una nuova serie di appoggio per fare la seconda parte
                         {
-                            double y1 = Math.Sqrt(Math.Pow(a, 2) * (1 - Math.Pow(x / b, 2)));
-                            double y2 = -Math.Sqrt(Math.Pow(a, 2) * (1 - Math.Pow(x / b, 2)));
-                            
-                            Console.WriteLine("x = " + x + ", y1 = " + y1 + ", y2 = " + y2);
-                        }*/
+                            serie.Add(new Series());
+                            chart.Series.Add(new Series());
+                            serie[nFigura + 1].ChartType = SeriesChartType.Line;
+                            Color colore = serie[nFigura].Color;
+                            serie[nFigura + 1].Color = colore;
+                            posizioniIperbole.Add(nFigura);
+                            posizioniIperbole.Add(nFigura + 1);
+                        }
                         
                         if (radioBtnFuochiX.Checked)
                         {
                             listBoxFormule.Items[nFigura] = "x²/" + a + "² - y²/" + b + "² = 1";
-                            
-                            /*for (double x = min; x <= max; x += 0.1)
-                            {
-                                double y = Math.Sqrt(Math.Pow(a, 2) * (1 - Math.Pow(x / b, 2)));
-                                serie[nFigura].Points.AddXY(x, y);
-                            }*/
                             
                             for (double theta = -Math.PI; theta <= Math.PI; theta += 0.1)
                             {
@@ -777,27 +821,16 @@ namespace Calcolatrice_Avanzata
                                 }
                             }
                             
-                            for (double theta = -2 * Math.PI; theta <= 2 * Math.PI; theta += 0.1)
+                            for (double theta = -Math.PI; theta <= Math.PI; theta += 0.1)
                             {
                                 double x = a * Math.Cosh(theta);
-                                if (theta < 0)
-                                {
-                                    x = -x;
-                                }
-
                                 double y = b * Math.Sinh(theta);
 
-                                if (Math.Abs(y / b) > 1)
+                                if (Math.Abs(x / a) >= 1 || Math.Abs(y / b) >= 1)
                                 {
-                                    serie[nFigura].Points.AddXY(x, y);
+                                    serie[nFigura + 1].Points.AddXY(-x, y);
                                 }
                             }
-                            
-                            /*for (double x = min; x <= max; x += 0.1)
-                            {
-                                double y = -Math.Sqrt(Math.Pow(a, 2) * (1 - Math.Pow(x / b, 2)));
-                                serie[nFigura].Points.AddXY(x, y);
-                            }*/
                         }
                         else
                         {
@@ -810,17 +843,21 @@ namespace Calcolatrice_Avanzata
                                 serie[nFigura].Points.AddXY(x, y);
                             }
 
-                            for (double x = min; x <= max; x++)
+                            for (double x = min; x <= max; x += 0.1)
                             {
                                 double y = -Math.Sqrt(Math.Pow(a, 2) +
                                                        (Math.Pow(a, 2) / Math.Pow(b, 2)) * Math.Pow(x, 2));
-                                serie[nFigura].Points.AddXY(x, y);
+                                serie[nFigura + 1].Points.AddXY(x, y);
                             }
                         }
                         
                         chart.Series[nFigura] = serie[nFigura]; //assegnamo alla serie di chart in posizione nFigura la serie in posizione nFigura appena caricata con tutti i punti
+                        chart.Series[nFigura + 1] = serie[nFigura + 1]; //assegnamo alla serie di chart in posizione nFigura la serie in posizione nFigura appena caricata con tutti i punti
                         break;
                 }
+
+                if (comboBoxFormule.SelectedIndex == 5 || comboBoxFormule.SelectedIndex == 6) //stiamo dicendo che abbiamo appena creato una iperbole
+                    iperbole = true;
             }
         }
 
@@ -830,6 +867,8 @@ namespace Calcolatrice_Avanzata
             label1.Visible = false;
             label2.Visible = false;
             label3.Visible = false;
+            radioBtnFuochiX.Visible = false;
+            radioBtnFuochiY.Visible = false;
             
             textBox3.Visible = false;
             textBox3.Text = "";
@@ -844,13 +883,17 @@ namespace Calcolatrice_Avanzata
             txtMin.Text = "";
             
             listBoxFormule.Items.Clear();
-            
-            chart.Series.Clear();
-            serie[nFigura].Points.Clear();
-            chart.ChartAreas.Clear();
 
             nFigura = 0;
-
+            
+            chart.Series.Clear();
+            serie.Clear();
+            
+            chart.Series.Add(new Series());
+            serie.Add(new Series()); //aggiungiamo una nuova serie alla lista
+            serie[nFigura].ChartType = SeriesChartType.Line; //definiamo il tipo di dati della serie che stiamo creando
+            serie[nFigura].Color = Color.Black;
+            
             chart.ChartAreas[nFigura].AxisX.Maximum = 3;
             chart.ChartAreas[nFigura].AxisX.Minimum = -3;
             
@@ -864,9 +907,70 @@ namespace Calcolatrice_Avanzata
             serie[nFigura].Points.AddXY(-1, 4);
             serie[nFigura].Points.AddXY(-2, 3);
             serie[nFigura].Points.AddXY(0, 0);
-            chart.Series.Add(serie[nFigura]);
+            chart.Series[nFigura] = serie[nFigura];
 
             comboBoxFormule.SelectedIndex = -1;
+            listBoxFormule.Items.Add(""); //aggiungiamo un oggetto alla lista
+        }
+
+        private void aggiungiFiguraToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listBoxFormule.Items[nFigura].ToString() != "")
+            {
+                textBox1.Text = "";
+                textBox2.Text = "";
+                textBox3.Text = "";
+                comboBoxFormule.SelectedIndex = -1;
+                serie.Add(new Series());
+                chart.Series.Add(new Series());
+                listBoxFormule.Items.Add("");
+                if (iperbole)
+                    nFigura += 2;
+                else
+                    nFigura++;
+                serie[nFigura].ChartType = SeriesChartType.Line;
+                serie[nFigura].Color = Color.FromArgb(rnd.Next(0, 256), rnd.Next(0, 256), rnd.Next(0, 256));
+                
+            }
+            else
+                MessageBox.Show("Prima di creare una nuova funzione da inserire, devi inserirne una qua", "Errore");
+        }
+
+        private void eliminaFunzioneToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listBoxFormule.Items.Count > 0)
+            {
+                int i = -1;
+
+                while (!int.TryParse(Interaction.InputBox("Inserisci il numero della funzione da eliminare"), out i) ||
+                       i <= 0)
+                {
+                }
+                
+                if (i > listBoxFormule.Items.Count)
+                    MessageBox.Show("Indice troppo grande", "Errore");
+                else
+                {
+                    listBoxFormule.Items.RemoveAt(i - 1);
+                    nFigura--;
+                    if (posizioniIperbole.Contains(i))
+                    {
+                        chart.Series.RemoveAt(i);
+                        chart.Series.RemoveAt(i - 1);
+                        serie.RemoveAt(i);
+                        serie.RemoveAt(i - 1);
+                        posizioniIperbole.RemoveAt(posizioniIperbole.Find(x => x == i - 1));
+                        posizioniIperbole.RemoveAt(posizioniIperbole.Find(x => x == i));
+                    }
+                    else
+                    {
+                        chart.Series.RemoveAt(i - 1);
+                        serie.RemoveAt(i - 1);
+                    }
+                }
+            }
+            else
+                MessageBox.Show("Non ci sono funzioni da eliminare", "Errore");
         }
     }
 }
