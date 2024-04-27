@@ -1,34 +1,47 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Input;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Xaml;
 using Microsoft.VisualBasic;
 
 namespace Calcolatrice_Avanzata
 {
     public partial class SimilGeogebra : Form
     {
+        
+        /*
+         * MODIFICHE DA FINIRE:
+         * 1. IMPLEMENTAZIONE DELLA LISTA NUOVA posizioneFigureReale
+         * 2. AGGIUNTA IPERBOLE QUADRILATERA
+         * 3. IMPLEMENTAZIONE DELLE ULTIME FUNZIONI E DELLE ULTIME OPZIONI
+         */
+        
         private Random rnd = new Random();
         
         private Form InterfacciaSimilGeogebra = new Form();
         private Chart chart = new Chart(); //creazione grafico su dove disegnare
         private List<Series> serie = new List<Series>(); //lista di serie (le serie servono per disegnare le funzioni dando dei punti con X e Y), ad ogni lista corrispondente una funzione
-        
-        private Label label1 = new Label(); //li usiamo per la creazione dinamica
-        private TextBox textBox1 = new TextBox(); //li usiamo per la creazione dinamica
-        private Label label2 = new Label(); //li usiamo per la creazione dinamica
-        private TextBox textBox2 = new TextBox(); //li usiamo per la creazione dinamica
-        private Label label3 = new Label(); //li usiamo per la creazione dinamica
-        private TextBox textBox3 = new TextBox(); //li usiamo per la creazione dinamica
-        private Label lblVettoreDiSpostamento = new Label(); //li usiamo per la creazione dinamica
+
+        private Label lblA_M = new Label(); //li usiamo per la creazione dinamica
+        private TextBox txtA_M = new TextBox(); //li usiamo per la creazione dinamica
+        private Label lblB_Q = new Label(); //li usiamo per la creazione dinamica
+        private TextBox txtB_Q = new TextBox(); //li usiamo per la creazione dinamica
+        private Label lblC = new Label(); //li usiamo per la creazione dinamica
+        private TextBox txtC = new TextBox(); //li usiamo per la creazione dinamica
+        private Label lblVet = new Label(); //li usiamo per la creazione dinamica
+        private TextBox txtVetX = new TextBox(); //li usiamo per la creazione dinamica
+        private TextBox txtVetY = new TextBox(); //li usiamo per la creazione dinamica
         private RadioButton radioBtnFuochiX = new RadioButton(); //li usiamo per la creazione dinamica
         private RadioButton radioBtnFuochiY = new RadioButton(); //li usiamo per la creazione dinamica
 
         private int nFigura = 0; //corrisponde a quale figura ci troviamo in questo momento
         private bool iperbole = false; //variabile di appoggio per dire se abbiamo un'iperbole oppure no
-        private List<int> posizioniIperbole = new List<int>();
+        private List<int> posizioniIperbole = new List<int>(); //posizioni dell'iperbole dentro le serie dei chart
+        private List<int> posizioneFigureReale = new List<int>(); //posizione reale delle figure dentro il grafico
 
         public SimilGeogebra()
         {
@@ -73,6 +86,18 @@ namespace Calcolatrice_Avanzata
             InterfacciaSimilGeogebra.FormClosed += SimilGeogebra_FormClosed;
             InterfacciaSimilGeogebra.ResumeLayout(false);
             InterfacciaSimilGeogebra_Load(sender, e);
+            
+            Controls.Add(lblA_M);
+            Controls.Add(lblB_Q);
+            Controls.Add(txtA_M);
+            Controls.Add(txtB_Q);
+            Controls.Add(radioBtnFuochiX);
+            Controls.Add(radioBtnFuochiY);
+            Controls.Add(lblC);
+            Controls.Add(txtC);
+            Controls.Add(lblVet);
+            Controls.Add(txtVetX);
+            Controls.Add(txtVetY);
         }
         
         private void InterfacciaSimilGeogebra_Load(object sender, EventArgs e)
@@ -101,17 +126,37 @@ namespace Calcolatrice_Avanzata
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            textBox1.Text = "";
-            textBox2.Text = "";
-            textBox3.Text = "";
+            txtA_M.Text = "";
+            txtB_Q.Text = "";
+            txtC.Text = "";
+            txtVetX.Text = "0";
+            txtVetY.Text = "0";
+            txtVetY.Enabled = true;
+            txtVetX.Enabled = true;
 
-            if (comboBoxFormule.SelectedIndex == 5 || comboBoxFormule.SelectedIndex == 6)
+            if (comboBoxFormule.SelectedIndex == 4 ||comboBoxFormule.SelectedIndex == 5 || comboBoxFormule.SelectedIndex == 6)
             {
-                radioBtnFuochiX.Visible = true;
-                radioBtnFuochiY.Visible = true;
+                lblVet.Visible = true;
+                txtVetX.Visible = true;
+                txtVetX.BringToFront();
+                txtVetY.Visible = true;
+                txtVetY.BringToFront();
+                if (comboBoxFormule.SelectedIndex == 5 || comboBoxFormule.SelectedIndex == 6)
+                {
+                    radioBtnFuochiX.Visible = true;
+                    radioBtnFuochiY.Visible = true;
+                }
+                else
+                {
+                    radioBtnFuochiX.Visible = false;
+                    radioBtnFuochiY.Visible = false;
+                }
             }
             else
             {
+                lblVet.Visible = false;
+                txtVetX.Visible = false;
+                txtVetY.Visible = false;
                 radioBtnFuochiX.Visible = false;
                 radioBtnFuochiY.Visible = false;
             }
@@ -119,243 +164,284 @@ namespace Calcolatrice_Avanzata
             switch (comboBoxFormule.SelectedIndex)
             {
                 case 0:  //retta
-                    this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.label1.Location = new System.Drawing.Point(128, 125);
-                    this.label1.Name = "label1";
-                    this.label1.Size = new System.Drawing.Size(32, 36);
-                    this.label1.TabIndex = 35;
-                    this.label1.Text = "m";
-                    label1.Visible = true;
+                    this.lblA_M.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.lblA_M.Location = new System.Drawing.Point(128, 125);
+                    this.lblA_M.Name = "label1";
+                    this.lblA_M.Size = new System.Drawing.Size(32, 36);
+                    this.lblA_M.TabIndex = 35;
+                    this.lblA_M.Text = "m";
+                    lblA_M.Visible = true;
                     
-                    this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.textBox1.Location = new System.Drawing.Point(166, 122);
-                    this.textBox1.Name = "txtM";
-                    this.textBox1.Size = new System.Drawing.Size(100, 38);
-                    this.textBox1.TabIndex = 36;
-                    textBox1.Visible = true;
+                    this.txtA_M.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.txtA_M.Location = new System.Drawing.Point(166, 122);
+                    this.txtA_M.Name = "txtM";
+                    this.txtA_M.Size = new System.Drawing.Size(100, 38);
+                    this.txtA_M.TabIndex = 36;
+                    txtA_M.Visible = true;
                     
-                    this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.label2.Location = new System.Drawing.Point(373, 125);
-                    this.label2.Size = new System.Drawing.Size(32, 36);
-                    this.label2.TabIndex = 37;
-                    this.label2.Text = "q";
-                    label2.Visible = true;
+                    this.lblB_Q.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.lblB_Q.Location = new System.Drawing.Point(373, 125);
+                    this.lblB_Q.Size = new System.Drawing.Size(32, 36);
+                    this.lblB_Q.TabIndex = 37;
+                    this.lblB_Q.Text = "q";
+                    lblB_Q.Visible = true;
                     
-                    this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.textBox2.Location = new System.Drawing.Point(411, 122);
-                    this.textBox2.Name = "txtQ";
-                    this.textBox2.Size = new System.Drawing.Size(100, 38);
-                    this.textBox2.TabIndex = 38;
-                    textBox2.Visible = true;
+                    this.txtB_Q.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.txtB_Q.Location = new System.Drawing.Point(411, 122);
+                    this.txtB_Q.Name = "txtQ";
+                    this.txtB_Q.Size = new System.Drawing.Size(100, 38);
+                    this.txtB_Q.TabIndex = 38;
+                    txtB_Q.Visible = true;
 
-                    label3.Visible = false;
-                    textBox3.Visible = false;
+                    lblC.Visible = false;
+                    txtC.Visible = false;
                     break;
                 
                 case 1: //parabola
-                    this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.label1.Location = new System.Drawing.Point(72, 78);
-                    this.label1.Name = "label1";
-                    this.label1.Size = new System.Drawing.Size(30, 36);
-                    this.label1.TabIndex = 51;
-                    this.label1.Text = "a";
-                    label1.Visible = true;
+                    this.lblA_M.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.lblA_M.Location = new System.Drawing.Point(72, 78);
+                    this.lblA_M.Name = "label1";
+                    this.lblA_M.Size = new System.Drawing.Size(30, 36);
+                    this.lblA_M.TabIndex = 51;
+                    this.lblA_M.Text = "a";
+                    lblA_M.Visible = true;
                     
-                    this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.textBox1.Location = new System.Drawing.Point(108, 75);
-                    this.textBox1.Name = "textBox1";
-                    this.textBox1.Size = new System.Drawing.Size(155, 38);
-                    this.textBox1.TabIndex = 52;
-                    textBox1.Visible = true;
+                    this.txtA_M.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.txtA_M.Location = new System.Drawing.Point(108, 75);
+                    this.txtA_M.Name = "textBox1";
+                    this.txtA_M.Size = new System.Drawing.Size(155, 38);
+                    this.txtA_M.TabIndex = 52;
+                    txtA_M.Visible = true;
                     
-                    this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.textBox2.Location = new System.Drawing.Point(406, 75);
-                    this.textBox2.Name = "textBox2";
-                    this.textBox2.Size = new System.Drawing.Size(155, 38);
-                    this.textBox2.TabIndex = 54;
-                    textBox2.Visible = true;
+                    this.txtB_Q.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.txtB_Q.Location = new System.Drawing.Point(406, 75);
+                    this.txtB_Q.Name = "textBox2";
+                    this.txtB_Q.Size = new System.Drawing.Size(155, 38);
+                    this.txtB_Q.TabIndex = 54;
+                    txtB_Q.Visible = true;
                     
-                    this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.label2.Location = new System.Drawing.Point(370, 78);
-                    this.label2.Name = "label2";
-                    this.label2.Size = new System.Drawing.Size(30, 36);
-                    this.label2.TabIndex = 53;
-                    this.label2.Text = "b";
-                    label2.Visible = true;
+                    this.lblB_Q.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.lblB_Q.Location = new System.Drawing.Point(370, 78);
+                    this.lblB_Q.Name = "lblB_Q";
+                    this.lblB_Q.Size = new System.Drawing.Size(30, 36);
+                    this.lblB_Q.TabIndex = 53;
+                    this.lblB_Q.Text = "b";
+                    lblB_Q.Visible = true;
                     
-                    this.textBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.textBox3.Location = new System.Drawing.Point(245, 161);
-                    this.textBox3.Name = "textBox3";
-                    this.textBox3.Size = new System.Drawing.Size(155, 38);
-                    this.textBox3.TabIndex = 56;
-                    textBox3.Visible = true;
+                    this.txtC.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.txtC.Location = new System.Drawing.Point(245, 161);
+                    this.txtC.Name = "textBox3";
+                    this.txtC.Size = new System.Drawing.Size(155, 38);
+                    this.txtC.TabIndex = 56;
+                    txtC.Visible = true;
                     
-                    this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.label3.Location = new System.Drawing.Point(209, 164);
-                    this.label3.Name = "label3";
-                    this.label3.Size = new System.Drawing.Size(30, 36);
-                    this.label3.TabIndex = 55;
-                    label3.Text = "c";
-                    label3.Visible = true;
+                    this.lblC.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.lblC.Location = new System.Drawing.Point(209, 164);
+                    this.lblC.Name = "label3";
+                    this.lblC.Size = new System.Drawing.Size(30, 36);
+                    this.lblC.TabIndex = 55;
+                    lblC.Text = "c";
+                    lblC.Visible = true;
                     break;
                 
                 case 2: //parabola coricata
-                    this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.label1.Location = new System.Drawing.Point(72, 78);
-                    this.label1.Name = "label1";
-                    this.label1.Size = new System.Drawing.Size(30, 36);
-                    this.label1.TabIndex = 51;
-                    this.label1.Text = "a";
-                    label1.Visible = true;
+                    this.lblA_M.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.lblA_M.Location = new System.Drawing.Point(72, 78);
+                    this.lblA_M.Name = "label1";
+                    this.lblA_M.Size = new System.Drawing.Size(30, 36);
+                    this.lblA_M.TabIndex = 51;
+                    this.lblA_M.Text = "a";
+                    lblA_M.Visible = true;
                     
-                    this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.textBox1.Location = new System.Drawing.Point(108, 75);
-                    this.textBox1.Name = "textBox1";
-                    this.textBox1.Size = new System.Drawing.Size(155, 38);
-                    this.textBox1.TabIndex = 52;
-                    textBox1.Visible = true;
+                    this.txtA_M.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.txtA_M.Location = new System.Drawing.Point(108, 75);
+                    this.txtA_M.Name = "textBox1";
+                    this.txtA_M.Size = new System.Drawing.Size(155, 38);
+                    this.txtA_M.TabIndex = 52;
+                    txtA_M.Visible = true;
                     
-                    this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.textBox2.Location = new System.Drawing.Point(406, 75);
-                    this.textBox2.Name = "textBox2";
-                    this.textBox2.Size = new System.Drawing.Size(155, 38);
-                    this.textBox2.TabIndex = 54;
-                    textBox2.Visible = true;
+                    this.txtB_Q.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.txtB_Q.Location = new System.Drawing.Point(406, 75);
+                    this.txtB_Q.Name = "textBox2";
+                    this.txtB_Q.Size = new System.Drawing.Size(155, 38);
+                    this.txtB_Q.TabIndex = 54;
+                    txtB_Q.Visible = true;
                     
-                    this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.label2.Location = new System.Drawing.Point(370, 78);
-                    this.label2.Name = "label2";
-                    this.label2.Size = new System.Drawing.Size(30, 36);
-                    this.label2.TabIndex = 53;
-                    this.label2.Text = "b";
-                    label2.Visible = true;
+                    this.lblB_Q.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.lblB_Q.Location = new System.Drawing.Point(370, 78);
+                    this.lblB_Q.Name = "lblB_Q";
+                    this.lblB_Q.Size = new System.Drawing.Size(30, 36);
+                    this.lblB_Q.TabIndex = 53;
+                    this.lblB_Q.Text = "b";
+                    lblB_Q.Visible = true;
                     
-                    this.textBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.textBox3.Location = new System.Drawing.Point(245, 161);
-                    this.textBox3.Name = "textBox3";
-                    this.textBox3.Size = new System.Drawing.Size(155, 38);
-                    this.textBox3.TabIndex = 56;
-                    textBox3.Visible = true;
+                    this.txtC.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.txtC.Location = new System.Drawing.Point(245, 161);
+                    this.txtC.Name = "textBox3";
+                    this.txtC.Size = new System.Drawing.Size(155, 38);
+                    this.txtC.TabIndex = 56;
+                    txtC.Visible = true;
                     
-                    this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.label3.Location = new System.Drawing.Point(209, 164);
-                    this.label3.Name = "label3";
-                    this.label3.Size = new System.Drawing.Size(30, 36);
-                    this.label3.TabIndex = 55;
-                    label3.Text = "c";
-                    label3.Visible = true;
+                    this.lblC.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.lblC.Location = new System.Drawing.Point(209, 164);
+                    this.lblC.Name = "label3";
+                    this.lblC.Size = new System.Drawing.Size(30, 36);
+                    this.lblC.TabIndex = 55;
+                    lblC.Text = "c";
+                    lblC.Visible = true;
                     break;
                 
                 case 3: //circonferenza
-                    this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.label1.Location = new System.Drawing.Point(72, 78);
-                    this.label1.Name = "label1";
-                    this.label1.Size = new System.Drawing.Size(30, 36);
-                    this.label1.TabIndex = 51;
-                    this.label1.Text = "a";
-                    label1.Visible = true;
+                    this.lblA_M.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.lblA_M.Location = new System.Drawing.Point(72, 78);
+                    this.lblA_M.Name = "label1";
+                    this.lblA_M.Size = new System.Drawing.Size(30, 36);
+                    this.lblA_M.TabIndex = 51;
+                    this.lblA_M.Text = "a";
+                    lblA_M.Visible = true;
                     
-                    this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.textBox1.Location = new System.Drawing.Point(108, 75);
-                    this.textBox1.Name = "textBox1";
-                    this.textBox1.Size = new System.Drawing.Size(155, 38);
-                    this.textBox1.TabIndex = 52;
-                    textBox1.Visible = true;
+                    this.txtA_M.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.txtA_M.Location = new System.Drawing.Point(108, 75);
+                    this.txtA_M.Name = "textBox1";
+                    this.txtA_M.Size = new System.Drawing.Size(155, 38);
+                    this.txtA_M.TabIndex = 52;
+                    txtA_M.Visible = true;
                     
-                    this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.textBox2.Location = new System.Drawing.Point(406, 75);
-                    this.textBox2.Name = "textBox2";
-                    this.textBox2.Size = new System.Drawing.Size(155, 38);
-                    this.textBox2.TabIndex = 54;
-                    textBox2.Visible = true;
+                    this.txtB_Q.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.txtB_Q.Location = new System.Drawing.Point(406, 75);
+                    this.txtB_Q.Name = "textBox2";
+                    this.txtB_Q.Size = new System.Drawing.Size(155, 38);
+                    this.txtB_Q.TabIndex = 54;
+                    txtB_Q.Visible = true;
                     
-                    this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.label2.Location = new System.Drawing.Point(370, 78);
-                    this.label2.Name = "label2";
-                    this.label2.Size = new System.Drawing.Size(30, 36);
-                    this.label2.TabIndex = 53;
-                    this.label2.Text = "b";
-                    label2.Visible = true;
+                    this.lblB_Q.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.lblB_Q.Location = new System.Drawing.Point(370, 78);
+                    this.lblB_Q.Name = "lblB_Q";
+                    this.lblB_Q.Size = new System.Drawing.Size(30, 36);
+                    this.lblB_Q.TabIndex = 53;
+                    this.lblB_Q.Text = "b";
+                    lblB_Q.Visible = true;
                     
-                    this.textBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.textBox3.Location = new System.Drawing.Point(245, 161);
-                    this.textBox3.Name = "textBox3";
-                    this.textBox3.Size = new System.Drawing.Size(155, 38);
-                    this.textBox3.TabIndex = 56;
-                    textBox3.Visible = true;
+                    this.txtC.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.txtC.Location = new System.Drawing.Point(245, 161);
+                    this.txtC.Name = "textBox3";
+                    this.txtC.Size = new System.Drawing.Size(155, 38);
+                    this.txtC.TabIndex = 56;
+                    txtC.Visible = true;
                     
-                    this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.label3.Location = new System.Drawing.Point(209, 164);
-                    this.label3.Name = "label3";
-                    this.label3.Size = new System.Drawing.Size(30, 36);
-                    this.label3.TabIndex = 55;
-                    label3.Text = "c";
-                    label3.Visible = true;
+                    this.lblC.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.lblC.Location = new System.Drawing.Point(209, 164);
+                    this.lblC.Name = "label3";
+                    this.lblC.Size = new System.Drawing.Size(30, 36);
+                    this.lblC.TabIndex = 55;
+                    lblC.Text = "c";
+                    lblC.Visible = true;
                     break;
                 
                 case 4: //ellisse
-                    this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.label1.Location = new System.Drawing.Point(128, 125);
-                    this.label1.Name = "label1";
-                    this.label1.Size = new System.Drawing.Size(52, 36);
-                    this.label1.TabIndex = 35;
-                    this.label1.Text = "a²";
-                    label1.Visible = true;
+                    this.lblA_M.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.lblA_M.Location = new System.Drawing.Point(128, 125);
+                    this.lblA_M.Name = "label1";
+                    this.lblA_M.Size = new System.Drawing.Size(52, 36);
+                    this.lblA_M.TabIndex = 35;
+                    this.lblA_M.Text = "a²";
+                    lblA_M.Visible = true;
                     
-                    this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.textBox1.Location = new System.Drawing.Point(186, 122);
-                    this.textBox1.Name = "txtA";
-                    this.textBox1.Size = new System.Drawing.Size(100, 38);
-                    this.textBox1.TabIndex = 36;
-                    textBox1.Visible = true;
+                    this.txtA_M.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.txtA_M.Location = new System.Drawing.Point(186, 122);
+                    this.txtA_M.Name = "txtA";
+                    this.txtA_M.Size = new System.Drawing.Size(100, 38);
+                    this.txtA_M.TabIndex = 36;
+                    txtA_M.Visible = true;
                     
-                    this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.label2.Location = new System.Drawing.Point(373, 125);
-                    this.label2.Size = new System.Drawing.Size(52, 36);
-                    this.label2.TabIndex = 37;
-                    this.label2.Text = "b²";
-                    label2.Visible = true;
+                    this.lblB_Q.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.lblB_Q.Location = new System.Drawing.Point(373, 125);
+                    this.lblB_Q.Size = new System.Drawing.Size(52, 36);
+                    this.lblB_Q.TabIndex = 37;
+                    this.lblB_Q.Text = "b²";
+                    lblB_Q.Visible = true;
                     
-                    this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.textBox2.Location = new System.Drawing.Point(431, 122);
-                    this.textBox2.Name = "txtB";
-                    this.textBox2.Size = new System.Drawing.Size(100, 38);
-                    this.textBox2.TabIndex = 38;
-                    textBox2.Visible = true;
+                    this.txtB_Q.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.txtB_Q.Location = new System.Drawing.Point(431, 122);
+                    this.txtB_Q.Name = "txtB";
+                    this.txtB_Q.Size = new System.Drawing.Size(100, 38);
+                    this.txtB_Q.TabIndex = 38;
+                    txtB_Q.Visible = true;
+                    
+                    this.lblVet.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.lblVet.Location = new System.Drawing.Point(200, 207);
+                    this.lblVet.Name = "lblVet";
+                    this.lblVet.Size = new System.Drawing.Size(287, 27);
+                    this.lblVet.TabIndex = 52;
+                    this.lblVet.Text = "vet(                 ;                   )";
+                    
+                    this.txtVetX.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.txtVetX.Location = new System.Drawing.Point(250, 205);
+                    this.txtVetX.Name = "txtVetX";
+                    this.txtVetX.Size = new System.Drawing.Size(84, 29);
+                    this.txtVetX.TabIndex = 53;
+                    
+                    this.txtVetY.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.txtVetY.Location = new System.Drawing.Point(361, 205);
+                    this.txtVetY.Name = "txtVetY";
+                    this.txtVetY.Size = new System.Drawing.Size(90, 29);
+                    this.txtVetY.TabIndex = 55;
 
-                    label3.Visible = false;
-                    textBox3.Visible = false;
+                    txtVetX.Text = "0";
+                    txtVetY.Text = "0";
+
+                    lblC.Visible = false;
+                    txtC.Visible = false;
                     break;
                 
                 case 5: //iperbole
-                    this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.label1.Location = new System.Drawing.Point(128, 125);
-                    this.label1.Name = "label1";
-                    this.label1.Size = new System.Drawing.Size(52, 36);
-                    this.label1.TabIndex = 35;
-                    this.label1.Text = "a²";
-                    label1.Visible = true;
+                    this.lblA_M.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.lblA_M.Location = new System.Drawing.Point(128, 125);
+                    this.lblA_M.Name = "label1";
+                    this.lblA_M.Size = new System.Drawing.Size(52, 36);
+                    this.lblA_M.TabIndex = 35;
+                    this.lblA_M.Text = "a²";
+                    lblA_M.Visible = true;
                     
-                    this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.textBox1.Location = new System.Drawing.Point(186, 122);
-                    this.textBox1.Name = "txtA";
-                    this.textBox1.Size = new System.Drawing.Size(100, 38);
-                    this.textBox1.TabIndex = 36;
-                    textBox1.Visible = true;
+                    this.txtA_M.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.txtA_M.Location = new System.Drawing.Point(186, 122);
+                    this.txtA_M.Name = "txtA";
+                    this.txtA_M.Size = new System.Drawing.Size(100, 38);
+                    this.txtA_M.TabIndex = 36;
+                    txtA_M.Visible = true;
                     
-                    this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.label2.Location = new System.Drawing.Point(373, 125);
-                    this.label2.Size = new System.Drawing.Size(52, 36);
-                    this.label2.TabIndex = 37;
-                    this.label2.Text = "b²";
-                    label2.Visible = true;
+                    this.lblB_Q.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.lblB_Q.Location = new System.Drawing.Point(373, 125);
+                    this.lblB_Q.Size = new System.Drawing.Size(52, 36);
+                    this.lblB_Q.TabIndex = 37;
+                    this.lblB_Q.Text = "b²";
+                    lblB_Q.Visible = true;
                     
-                    this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    this.textBox2.Location = new System.Drawing.Point(431, 122);
-                    this.textBox2.Name = "txtB";
-                    this.textBox2.Size = new System.Drawing.Size(100, 38);
-                    this.textBox2.TabIndex = 38;
-                    textBox2.Visible = true;
+                    this.txtB_Q.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.txtB_Q.Location = new System.Drawing.Point(431, 122);
+                    this.txtB_Q.Name = "txtB";
+                    this.txtB_Q.Size = new System.Drawing.Size(100, 38);
+                    this.txtB_Q.TabIndex = 38;
+                    txtB_Q.Visible = true;
+                    
+                    this.lblVet.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.lblVet.Location = new System.Drawing.Point(200, 207);
+                    this.lblVet.Name = "lblVet";
+                    this.lblVet.Size = new System.Drawing.Size(287, 27);
+                    this.lblVet.TabIndex = 52;
+                    this.lblVet.Text = "vet(                 ;                   )";
+                    
+                    this.txtVetX.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.txtVetX.Location = new System.Drawing.Point(250, 205);
+                    this.txtVetX.Name = "txtVetX";
+                    this.txtVetX.Size = new System.Drawing.Size(84, 29);
+                    this.txtVetX.TabIndex = 53;
+                    
+                    this.txtVetY.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.txtVetY.Location = new System.Drawing.Point(361, 205);
+                    this.txtVetY.Name = "txtVetY";
+                    this.txtVetY.Size = new System.Drawing.Size(90, 29);
+                    this.txtVetY.TabIndex = 55;
                     
                     this.radioBtnFuochiX.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
                     this.radioBtnFuochiX.Location = new System.Drawing.Point(105, 250);
@@ -375,26 +461,13 @@ namespace Calcolatrice_Avanzata
                     this.radioBtnFuochiY.Text = "Fuochi sull\'asse Y";
                     this.radioBtnFuochiY.UseVisualStyleBackColor = true;
 
-                    radioBtnFuochiX.Checked = true;
-                    label3.Visible = false;
-                    textBox3.Visible = false;
-                    break;
-            }
+                    txtVetX.Text = "0";
+                    txtVetY.Text = "0";
 
-            if (Controls.Find("label1", true).Length == 0)
-            {
-                Controls.Add(label1);
-                Controls.Add(label2);
-                Controls.Add(textBox1);
-                Controls.Add(textBox2);
-                Controls.Add(radioBtnFuochiX);
-                Controls.Add(radioBtnFuochiY);
-            }
-            
-            if (Controls.Find("label3", true).Length == 0)
-            {
-                Controls.Add(label3);
-                Controls.Add(textBox3);
+                    radioBtnFuochiX.Checked = true;
+                    lblC.Visible = false;
+                    txtC.Visible = false;
+                    break;
             }
         }
 
@@ -404,6 +477,7 @@ namespace Calcolatrice_Avanzata
             double a, b, c; //variabili di appoggio per la parabola, cerchio, ellisse e iperbole
             double m, q; //variabili di appoggio per la retta
             double r, Cy, Cx, Vx, Vy; //variabili di appoggio (raggio, centro e vertice)
+            double vetX, vetY; //variabili di appoggio per il vettore
             
             if (comboBoxFormule.SelectedIndex == -1)
             {
@@ -412,21 +486,33 @@ namespace Calcolatrice_Avanzata
             }
             else
             {
+                if (posizioniIperbole.Count > 0)
+                    if (posizioniIperbole[posizioniIperbole.Count - 1] == nFigura)
+                        iperbole = true;
+                
                 switch (comboBoxFormule.SelectedIndex)
                 {
                     case 0: //retta
-                        if (!double.TryParse(textBox1.Text, out m))
+                        if (!double.TryParse(txtA_M.Text, out m))
                         {
                             MessageBox.Show("Inserisci correttamente il valore di m", "parametro m");
-                            textBox1.Focus();
+                            txtA_M.Focus();
                             return;
                         }
-                        if (!double.TryParse(textBox2.Text, out q))
+                        if (!double.TryParse(txtB_Q.Text, out q))
                         {
                             MessageBox.Show("Inserisci correttamente il valore di q", "parametro q");
-                            textBox2.Focus();
+                            txtB_Q.Focus();
                             return;
                         }
+
+                        if (m == 0 && q == 0)
+                        {
+                            MessageBox.Show("I valori di q e m non possono entrambi essere 0", "parametro q e m");
+                            txtB_Q.Focus();
+                            return;
+                        }
+                        
                         if (!double.TryParse(txtMax.Text, out max))
                         {
                             MessageBox.Show("Inserisci correttamente il valore di max", "parametro max");
@@ -444,15 +530,16 @@ namespace Calcolatrice_Avanzata
                         {
                             serie.RemoveAt(nFigura + 1);
                             chart.Series.RemoveAt(nFigura + 1);
+                            /*posizioniIperbole.RemoveAt(nFigura + 1);*/
                             posizioniIperbole.RemoveAt(nFigura);
-                            posizioniIperbole.RemoveAt(nFigura + 1);
                             iperbole = false;
                         }
                         
                         chart.ChartAreas[0].AxisX.Minimum = min;
                         chart.ChartAreas[0].AxisX.Maximum = max;
                         
-                        listBoxFormule.Items[nFigura] = "y = " + m + (q >= 0 ? "x + " : "x ") + q;
+                        listBoxFormule.Items[listBoxFormule.Items.Count - 1] = "y = " + (m != 0 ? m + (q > 0 ? "x + " : "x ") : "") +
+                                                                               (q != 0 ? q.ToString() : "");
 
                         if (serie[nFigura].Points.Count > 0)
                             serie[nFigura].Points.Clear();
@@ -465,28 +552,28 @@ namespace Calcolatrice_Avanzata
                         break;
                     
                     case 1: //parabola
-                        if (!double.TryParse(textBox1.Text, out a))
+                        if (!double.TryParse(txtA_M.Text, out a))
                         {
                             MessageBox.Show("Inserisci correttamente il valore di a", "parametro a");
-                            textBox1.Focus();
+                            txtA_M.Focus();
                             return;
                         }
                         if (a == 0)
                         {
                             MessageBox.Show("a non puo' essere 0", "parametro a");
-                            textBox1.Focus();
+                            txtA_M.Focus();
                             return;
                         }
-                        if (!double.TryParse(textBox2.Text, out b))
+                        if (!double.TryParse(txtB_Q.Text, out b))
                         {
                             MessageBox.Show("Inserisci correttamente il valore di b", "parametro b");
-                            textBox2.Focus();
+                            txtB_Q.Focus();
                             return;
                         }
-                        if (!double.TryParse(textBox3.Text, out c))
+                        if (!double.TryParse(txtC.Text, out c))
                         {
                             MessageBox.Show("Inserisci correttamente il valore di c", "parametro c");
-                            textBox3.Focus();
+                            txtC.Focus();
                             return;
                         }
                         if (!double.TryParse(txtMax.Text, out max))
@@ -506,8 +593,8 @@ namespace Calcolatrice_Avanzata
                         {
                             serie.RemoveAt(nFigura + 1);
                             chart.Series.RemoveAt(nFigura + 1);
+                            /*posizioniIperbole.RemoveAt(nFigura + 1);*/
                             posizioniIperbole.RemoveAt(nFigura);
-                            posizioniIperbole.RemoveAt(nFigura + 1);
                             iperbole = false;
                         }
                         
@@ -520,7 +607,7 @@ namespace Calcolatrice_Avanzata
                         chart.ChartAreas[0].AxisY.Minimum = Vy + min;
                         chart.ChartAreas[0].AxisY.Maximum = Vy + max;
 
-                        listBoxFormule.Items[nFigura] = "y = " + a + (b > 0 || c > 0 ? "x² + " : "x² ") + (b != 0 ? b + (c > 0 ? b + "x + " : "x ") : "") + (c != 0 ? c.ToString() : "");
+                        listBoxFormule.Items[listBoxFormule.Items.Count - 1] = "y = " + a + (b > 0 || c > 0 ? "x² + " : "x² ") + (b != 0 ? b + (c > 0 ? "x + " : "x ") : "") + (c != 0 ? c.ToString() : "");
                         
                         if (serie[nFigura].Points.Count > 0)
                             serie[nFigura].Points.Clear();
@@ -532,28 +619,28 @@ namespace Calcolatrice_Avanzata
                         break;
                     
                     case 2: //parabola coricata
-                        if (!double.TryParse(textBox1.Text, out a))
+                        if (!double.TryParse(txtA_M.Text, out a))
                         {
                             MessageBox.Show("Inserisci correttamente il valore di a", "parametro a");
-                            textBox1.Focus();
+                            txtA_M.Focus();
                             return;
                         }
                         if (a == 0)
                         {
                             MessageBox.Show("a non puo' essere 0", "parametro a");
-                            textBox1.Focus();
+                            txtA_M.Focus();
                             return;
                         }
-                        if (!double.TryParse(textBox2.Text, out b))
+                        if (!double.TryParse(txtB_Q.Text, out b))
                         {
                             MessageBox.Show("Inserisci correttamente il valore di b", "parametro b");
-                            textBox2.Focus();
+                            txtB_Q.Focus();
                             return;
-                        }
-                        if (!double.TryParse(textBox3.Text, out c))
+                        } 
+                        if (!double.TryParse(txtC.Text, out c))
                         {
                             MessageBox.Show("Inserisci correttamente il valore di c", "parametro c");
-                            textBox3.Focus();
+                            txtC.Focus();
                             return;
                         }
                         if (!double.TryParse(txtMax.Text, out max))
@@ -573,8 +660,8 @@ namespace Calcolatrice_Avanzata
                         {
                             serie.RemoveAt(nFigura + 1);
                             chart.Series.RemoveAt(nFigura + 1);
+                            /*posizioniIperbole.RemoveAt(nFigura + 1);*/
                             posizioniIperbole.RemoveAt(nFigura);
-                            posizioniIperbole.RemoveAt(nFigura + 1);
                             iperbole = false;
                         }
                         
@@ -587,7 +674,7 @@ namespace Calcolatrice_Avanzata
                         chart.ChartAreas[0].AxisY.Minimum = Vy + min;
                         chart.ChartAreas[0].AxisY.Maximum = Vy + max;
 
-                        listBoxFormule.Items[nFigura] = "x = " + a + (b > 0 || c > 0 ? "y² + " : "y² ") + (b != 0 ? b + (c > 0 ? "y + " : "y ") : "") + (c != 0 ? c.ToString() : "");
+                        listBoxFormule.Items[listBoxFormule.Items.Count - 1] = "x = " + a + (b > 0 || c > 0 ? "y² + " : "y² ") + (b != 0 ? b + (c > 0 ? "y + " : "y ") : "") + (c != 0 ? c.ToString() : "");
                         
                         if (serie[nFigura].Points.Count > 0)
                             serie[nFigura].Points.Clear();
@@ -599,28 +686,28 @@ namespace Calcolatrice_Avanzata
                         break;
                     
                     case 3: //circonferenza
-                        if (!double.TryParse(textBox1.Text, out a))
+                        if (!double.TryParse(txtA_M.Text, out a))
                         {
                             MessageBox.Show("Inserisci correttamente il valore di a", "parametro a");
-                            textBox1.Focus();
+                            txtA_M.Focus();
                             return;
                         }
-                        if (!double.TryParse(textBox2.Text, out b))
+                        if (!double.TryParse(txtB_Q.Text, out b))
                         {
                             MessageBox.Show("Inserisci correttamente il valore di b", "parametro b");
-                            textBox2.Focus();
+                            txtB_Q.Focus();
                             return;
                         }
-                        if (!double.TryParse(textBox3.Text, out c))
+                        if (!double.TryParse(txtC.Text, out c))
                         {
                             MessageBox.Show("Inserisci correttamente il valore di c", "parametro c");
-                            textBox3.Focus();
+                            txtC.Focus();
                             return;
                         }
                         if (a == 0 && b == 0 && c == 0)
                         {
                             MessageBox.Show("a, b e c non possono essere tutti uguali a 0", "parametri a, b e c");
-                            textBox1.Focus();
+                            txtA_M.Focus();
                             return;
                         }
                         if (!double.TryParse(txtMax.Text, out max))
@@ -650,8 +737,8 @@ namespace Calcolatrice_Avanzata
                         {
                             serie.RemoveAt(nFigura + 1);
                             chart.Series.RemoveAt(nFigura + 1);
+                            /*posizioniIperbole.RemoveAt(nFigura + 1);*/
                             posizioniIperbole.RemoveAt(nFigura);
-                            posizioniIperbole.RemoveAt(nFigura + 1);
                             iperbole = false;
                         }
 
@@ -664,7 +751,7 @@ namespace Calcolatrice_Avanzata
                         chart.ChartAreas[0].AxisY.Minimum = Cy + min;
                         chart.ChartAreas[0].AxisY.Maximum = Cy + max;
 
-                        listBoxFormule.Items[nFigura] = (a > 0 || b > 0 || c > 0 ? "x² + y² + " : "x² + y² ") + (a != 0 ? a + (b > 0 ? "x + " : "x ") : "") + (b != 0 ? b + (c > 0 ? "y + " : "y ") : "") + (c == 0 ? "" : c.ToString()) + " = 0";
+                        listBoxFormule.Items[listBoxFormule.Items.Count - 1] = (a > 0 || b > 0 || c > 0 ? "x² + y² + " : "x² + y² ") + (a != 0 ? a + (b > 0 ? "x + " : "x ") : "") + (b != 0 ? b + (c > 0 ? "y + " : "y ") : "") + (c == 0 ? "" : c.ToString()) + " = 0";
                         
                         if (serie[nFigura].Points.Count > 0)
                             serie[nFigura].Points.Clear();
@@ -681,18 +768,18 @@ namespace Calcolatrice_Avanzata
                         break;
                     
                     case 4: //ellisse
-                        if (!double.TryParse(textBox1.Text, out a) || a <= 0)
+                        if (!double.TryParse(txtA_M.Text, out a) || a <= 0)
                         {
                             MessageBox.Show("Inserisci correttamente il valore di a, positivo e diverso da 0", "parametro a");
-                            textBox1.Focus();
+                            txtA_M.Focus();
                             return;
                         }
                         a = Math.Sqrt(a);
                         
-                        if (!double.TryParse(textBox2.Text, out b) || b <= 0)
+                        if (!double.TryParse(txtB_Q.Text, out b) || b <= 0)
                         {
                             MessageBox.Show("Inserisci correttamente il valore di b, positivo e diverso da 0", "parametro b");
-                            textBox2.Focus();
+                            txtB_Q.Focus();
                             return;
                         }
                         b = Math.Sqrt(b);
@@ -700,7 +787,7 @@ namespace Calcolatrice_Avanzata
                         if (a == b)
                         {
                             MessageBox.Show("Inserisci correttamente il valore di a diverso da b", "parametri a, b");
-                            textBox1.Focus();
+                            txtA_M.Focus();
                             return;
                         }
                         
@@ -716,23 +803,37 @@ namespace Calcolatrice_Avanzata
                             txtMin.Focus();
                             return;
                         }
+
+                        if (!double.TryParse(txtVetX.Text, out vetX))
+                        {
+                            MessageBox.Show("Inserisci correttamente la X del vettore", "parametro vetX");
+                            txtVetX.Focus();
+                            return;
+                        }
+
+                        if (!double.TryParse(txtVetY.Text, out vetY))
+                        {
+                            MessageBox.Show("Inserisci correttamente la Y del vettore", "parametro vetY");
+                            txtVetY.Focus();
+                            return;
+                        }
                         
                         if (iperbole) //se abbiamo una iperbole e vogliamo disegnare un'altra funzione al suo posto allora dobbiamo cancellare la serie che contiene la seconda parte di iperbole
                         {
                             serie.RemoveAt(nFigura + 1);
                             chart.Series.RemoveAt(nFigura + 1);
+                            /*posizioniIperbole.RemoveAt(nFigura + 1);*/
                             posizioniIperbole.RemoveAt(nFigura);
-                            posizioniIperbole.RemoveAt(nFigura + 1);
                             iperbole = false;
                         }
                         
-                        chart.ChartAreas[0].AxisX.Minimum = min;
-                        chart.ChartAreas[0].AxisX.Maximum = max;
+                        chart.ChartAreas[0].AxisX.Minimum = min + vetX;
+                        chart.ChartAreas[0].AxisX.Maximum = max + vetX;
                         
-                        chart.ChartAreas[0].AxisY.Minimum = min;
-                        chart.ChartAreas[0].AxisY.Maximum = max;
+                        chart.ChartAreas[0].AxisY.Minimum = min + vetY;
+                        chart.ChartAreas[0].AxisY.Maximum = max + vetY;
                         
-                        listBoxFormule.Items[nFigura] = "x²/" + a + "² + y²/" + b + "² = 1";
+                        listBoxFormule.Items[listBoxFormule.Items.Count - 1] = "x²/" + a + "² + y²/" + b + "² = 1";
                         
                         if (serie[nFigura].Points.Count > 0)
                             serie[nFigura].Points.Clear();
@@ -743,25 +844,25 @@ namespace Calcolatrice_Avanzata
                             double radians = angle * Math.PI / 180;
                             double x = a * Math.Cos(radians);
                             double y = b * Math.Sin(radians);
-                            serie[nFigura].Points.AddXY(x, y);
+                            serie[nFigura].Points.AddXY(x + vetX, y + vetY);
                         }
                         
                         chart.Series[nFigura] = serie[nFigura];
                         break;
                     
                     case 5: //iperebole
-                        if (!double.TryParse(textBox1.Text, out a) || a <= 0)
+                        if (!double.TryParse(txtA_M.Text, out a) || a <= 0)
                         {
                             MessageBox.Show("Inserisci correttamente il valore di a, positivo e diverso da 0", "parametro a");
-                            textBox1.Focus();
+                            txtA_M.Focus();
                             return;
                         }
                         a = Math.Sqrt(a);
                         
-                        if (!double.TryParse(textBox2.Text, out b) || b <= 0)
+                        if (!double.TryParse(txtB_Q.Text, out b) || b <= 0)
                         {
                             MessageBox.Show("Inserisci correttamente il valore di b, positivo e diverso da 0", "parametro b");
-                            textBox2.Focus();
+                            txtB_Q.Focus();
                             return;
                         }
                         b = Math.Sqrt(b);
@@ -769,7 +870,7 @@ namespace Calcolatrice_Avanzata
                         if (a == b)
                         {
                             MessageBox.Show("Inserisci correttamente il valore di a diverso da b", "parametri a, b");
-                            textBox1.Focus();
+                            txtA_M.Focus();
                             return;
                         }
                         
@@ -785,12 +886,26 @@ namespace Calcolatrice_Avanzata
                             txtMin.Focus();
                             return;
                         }
+
+                        if (!double.TryParse(txtVetX.Text, out vetX))
+                        {
+                            MessageBox.Show("Inserisci correttamente la X del vettore", "parametro vetX");
+                            txtVetX.Focus();
+                            return;
+                        }
+
+                        if (!double.TryParse(txtVetY.Text, out vetY))
+                        {
+                            MessageBox.Show("Inserisci correttamente la Y del vettore", "parametro vetY");
+                            txtVetY.Focus();
+                            return;
+                        }
                         
-                        chart.ChartAreas[0].AxisX.Minimum = min;
-                        chart.ChartAreas[0].AxisX.Maximum = max;
+                        chart.ChartAreas[0].AxisX.Minimum = min + vetX;
+                        chart.ChartAreas[0].AxisX.Maximum = max + vetX;
                         
-                        chart.ChartAreas[0].AxisY.Minimum = min;
-                        chart.ChartAreas[0].AxisY.Maximum = max;
+                        chart.ChartAreas[0].AxisY.Minimum = min + vetY;
+                        chart.ChartAreas[0].AxisY.Maximum = max + vetY;
                         
                         if (serie[nFigura].Points.Count > 0) //se la serie è già stata caricata andiamo a pulirla
                             serie[nFigura].Points.Clear();
@@ -803,12 +918,14 @@ namespace Calcolatrice_Avanzata
                             Color colore = serie[nFigura].Color;
                             serie[nFigura + 1].Color = colore;
                             posizioniIperbole.Add(nFigura);
-                            posizioniIperbole.Add(nFigura + 1);
+                            /*posizioniIperbole.Add(nFigura + 1);*/
                         }
+                        else if (serie[nFigura + 1].Points.Count > 0)
+                            serie[nFigura + 1].Points.Clear();
                         
                         if (radioBtnFuochiX.Checked)
                         {
-                            listBoxFormule.Items[nFigura] = "x²/" + a + "² - y²/" + b + "² = 1";
+                            listBoxFormule.Items[listBoxFormule.Items.Count - 1] = "x²/" + a + "² - y²/" + b + "² = 1";
                             
                             for (double theta = -Math.PI; theta <= Math.PI; theta += 0.1)
                             {
@@ -817,7 +934,7 @@ namespace Calcolatrice_Avanzata
 
                                 if (Math.Abs(x / a) >= 1 || Math.Abs(y / b) >= 1)
                                 {
-                                    serie[nFigura].Points.AddXY(x, y);
+                                    serie[nFigura].Points.AddXY(x + vetX, y + vetY);
                                 }
                             }
                             
@@ -828,26 +945,26 @@ namespace Calcolatrice_Avanzata
 
                                 if (Math.Abs(x / a) >= 1 || Math.Abs(y / b) >= 1)
                                 {
-                                    serie[nFigura + 1].Points.AddXY(-x, y);
+                                    serie[nFigura + 1].Points.AddXY(-x + vetX, y + vetY);
                                 }
                             }
                         }
                         else
                         {
-                            listBoxFormule.Items[nFigura] = "x²/" + a + "² - y²/" + b + "² = -1";
+                            listBoxFormule.Items[listBoxFormule.Items.Count - 1] = "x²/" + a + "² - y²/" + b + "² = -1";
 
                             for (double x = min; x <= max; x += 0.1)
                             {
                                 double y = Math.Sqrt(Math.Pow(a, 2) +
                                                       (Math.Pow(a, 2) / Math.Pow(b, 2)) * Math.Pow(x, 2));
-                                serie[nFigura].Points.AddXY(x, y);
+                                serie[nFigura].Points.AddXY(x + vetX, y + vetY);
                             }
 
                             for (double x = min; x <= max; x += 0.1)
                             {
                                 double y = -Math.Sqrt(Math.Pow(a, 2) +
                                                        (Math.Pow(a, 2) / Math.Pow(b, 2)) * Math.Pow(x, 2));
-                                serie[nFigura + 1].Points.AddXY(x, y);
+                                serie[nFigura + 1].Points.AddXY(x + vetX, y + vetY);
                             }
                         }
                         
@@ -864,20 +981,25 @@ namespace Calcolatrice_Avanzata
         private void btnReset_Click(object sender, EventArgs e)
         { 
             //reset per tutti i campi ancora da caricare 
-            label1.Visible = false;
-            label2.Visible = false;
-            label3.Visible = false;
+            lblA_M.Visible = false;
+            lblB_Q.Visible = false;
+            lblC.Visible = false;
             radioBtnFuochiX.Visible = false;
             radioBtnFuochiY.Visible = false;
+            lblVet.Visible = false;
+            txtVetX.Visible = false;
+            txtVetX.Text = "";
+            txtVetY.Text = "";
+            txtVetY.Visible = false;
             
-            textBox3.Visible = false;
-            textBox3.Text = "";
+            txtC.Visible = false;
+            txtC.Text = "";
             
-            textBox2.Visible = false;
-            textBox2.Text = "";
+            txtB_Q.Visible = false;
+            txtB_Q.Text = "";
             
-            textBox1.Visible = false;
-            textBox1.Text = "";
+            txtA_M.Visible = false;
+            txtA_M.Text = "";
 
             txtMax.Text = "";
             txtMin.Text = "";
@@ -915,14 +1037,11 @@ namespace Calcolatrice_Avanzata
 
         private void aggiungiFiguraToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (listBoxFormule.Items[nFigura].ToString() != "")
+            if (listBoxFormule.Items[listBoxFormule.Items.Count - 1].ToString() != "")
             {
-                textBox1.Text = "";
-                textBox2.Text = "";
-                textBox3.Text = "";
                 comboBoxFormule.SelectedIndex = -1;
                 serie.Add(new Series());
-                chart.Series.Add(new Series());
+                chart.Series.Add(new Series());  
                 listBoxFormule.Items.Add("");
                 if (iperbole)
                     nFigura += 2;
@@ -930,7 +1049,23 @@ namespace Calcolatrice_Avanzata
                     nFigura++;
                 serie[nFigura].ChartType = SeriesChartType.Line;
                 serie[nFigura].Color = Color.FromArgb(rnd.Next(0, 256), rnd.Next(0, 256), rnd.Next(0, 256));
-                
+                iperbole = false;
+                lblA_M.Visible = false;
+                lblB_Q.Visible = false;
+                lblC.Visible = false;
+                radioBtnFuochiX.Visible = false;
+                radioBtnFuochiY.Visible = false;
+                lblVet.Visible = false;
+                txtVetX.Visible = false;
+                txtVetX.Text = "";
+                txtVetY.Text = "";
+                txtVetY.Visible = false;
+                txtC.Visible = false;
+                txtC.Text = "";
+                txtB_Q.Visible = false;
+                txtB_Q.Text = "";
+                txtA_M.Visible = false;
+                txtA_M.Text = "";
             }
             else
                 MessageBox.Show("Prima di creare una nuova funzione da inserire, devi inserirne una qua", "Errore");
@@ -938,7 +1073,7 @@ namespace Calcolatrice_Avanzata
 
         private void eliminaFunzioneToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (listBoxFormule.Items.Count > 0)
+            if (listBoxFormule.Items.Count > 1)
             {
                 int i = -1;
 
@@ -952,25 +1087,38 @@ namespace Calcolatrice_Avanzata
                 else
                 {
                     listBoxFormule.Items.RemoveAt(i - 1);
-                    nFigura--;
-                    if (posizioniIperbole.Contains(i))
+                    if (posizioniIperbole.Contains(i - 1))
                     {
+                        if (i - 1 == posizioniIperbole[posizioniIperbole.Count - 1])
+                            nFigura--;
+                        else
+                            nFigura -= 2;
                         chart.Series.RemoveAt(i);
                         chart.Series.RemoveAt(i - 1);
                         serie.RemoveAt(i);
                         serie.RemoveAt(i - 1);
-                        posizioniIperbole.RemoveAt(posizioniIperbole.Find(x => x == i - 1));
-                        posizioniIperbole.RemoveAt(posizioniIperbole.Find(x => x == i));
+                        posizioniIperbole.RemoveAt(posizioniIperbole.FindIndex(x => x == i - 1));
+                        /*posizioniIperbole.RemoveAt(posizioniIperbole.FindIndex(x => x == i));*/
+                        if (posizioniIperbole.Count > 0)
+                            for (int j = 0; j < posizioniIperbole.Count; j++)
+                                posizioniIperbole[j] -= 2;
                     }
                     else
                     {
+                        nFigura--;
                         chart.Series.RemoveAt(i - 1);
                         serie.RemoveAt(i - 1);
+                        if (posizioniIperbole.Count > 1)
+                            for (int j = posizioniIperbole.FindIndex(x => x > i - 1) != -1 ? posizioniIperbole.FindIndex(x => x > i - 1) : Int32.MaxValue; j < posizioniIperbole.Count; j++)
+                                posizioniIperbole[j]--;
                     }
+                    iperbole = false;
                 }
             }
-            else
+            else if (listBoxFormule.Items.Count == 0)
                 MessageBox.Show("Non ci sono funzioni da eliminare", "Errore");
+            else
+                MessageBox.Show("Per eliminare una funzione devi averne almeno due, modifica quell'attuale", "Errore");
         }
     }
 }
