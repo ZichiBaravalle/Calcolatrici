@@ -97,6 +97,8 @@ namespace Calcolatrice_Avanzata
             Controls.Add(lblVet);
             Controls.Add(txtVetX);
             Controls.Add(txtVetY);
+            Controls.Add(lblD);
+            Controls.Add(txtD);
             
             posizioneFigureReale.Add(0);
         }
@@ -540,7 +542,7 @@ namespace Calcolatrice_Avanzata
         private void btnGenera_Click(object sender, EventArgs e)
         {
             double max, min; //variabili di appoggio per riuscire a disegnare la funzione
-            double a, b, c; //variabili di appoggio per la parabola, cerchio, ellisse e iperbole
+            double a, b, c, d; //variabili di appoggio per la parabola, cerchio, ellisse, iperbole quadrilatera e iperbole
             double m, q; //variabili di appoggio per la retta
             double r, Cy, Cx, Vx, Vy; //variabili di appoggio (raggio, centro e vertice)
             double vetX, vetY; //variabili di appoggio per il vettore
@@ -1037,6 +1039,102 @@ namespace Calcolatrice_Avanzata
                                 serie[chart.Series.Count - 1].Points.AddXY(x + vetX, y + vetY);
                             }
                         }
+                        
+                        chart.Series[chart.Series.Count - 2] = serie[chart.Series.Count - 2]; //assegnamo alla serie di chart in penultima posizione la serie in penultima posizione appena caricata con tutti i punti
+                        chart.Series[chart.Series.Count - 1] = serie[chart.Series.Count - 1]; //assegnamo alla serie di chart in ultima posizione la serie in ultima posizione appena caricata con tutti i punti
+                        break;
+                    
+                    case 6: //iperebole quadrilatera
+                        if (!double.TryParse(txtA_M.Text, out a))
+                        {
+                            MessageBox.Show("Inserisci correttamente il valore di a", "parametro a");
+                            txtA_M.Focus();
+                            return;
+                        }
+                        
+                        if (!double.TryParse(txtB_Q.Text, out b))
+                        {
+                            MessageBox.Show("Inserisci correttamente il valore di b", "parametro b");
+                            txtB_Q.Focus();
+                            return;
+                        }
+                        
+                        if (!double.TryParse(txtC.Text, out c) || c == 0)
+                        {
+                            MessageBox.Show("Inserisci correttamente il valore di c, dev'essere anche diverso da 0", "parametro b");
+                            txtC.Focus();
+                            return;
+                        }
+                        
+                        if (!double.TryParse(txtD.Text, out d))
+                        {
+                            MessageBox.Show("Inserisci correttamente il valore di d", "parametro b");
+                            txtD.Focus();
+                            return;
+                        }
+                        
+                        if (!double.TryParse(txtMax.Text, out max))
+                        {
+                            MessageBox.Show("Inserisci correttamente il valore di max", "parametro max");
+                            txtMax.Focus();
+                            return;
+                        }
+                        
+                        if (!double.TryParse(txtMin.Text, out min))
+                        {
+                            MessageBox.Show("Inserisci correttamente il valore di min", "parametro min");
+                            txtMin.Focus();
+                            return;
+                        }
+                        
+                        if (a * d - b * c == 0)
+                        {
+                            MessageBox.Show("L'operazione: a * d - b * c non può essere uguale a 0", "Errore");
+                            txtA_M.Focus();
+                            return;
+                        }
+
+                        Cx = -(d / c);
+                        Cy = a / c;
+                        
+                        chart.ChartAreas[0].AxisX.Minimum = min + Cx;
+                        chart.ChartAreas[0].AxisX.Maximum = max + Cx;
+                        
+                        chart.ChartAreas[0].AxisY.Minimum = min + Cy;
+                        chart.ChartAreas[0].AxisY.Maximum = max + Cy;
+                        
+                        if (iperbole)
+                        {
+                            if (serie[chart.Series.Count - 2].Points.Count >
+                                0) //se la serie è già stata caricata andiamo a pulirla
+                                serie[chart.Series.Count - 2].Points.Clear();
+                        }
+                        else if (serie[chart.Series.Count - 1].Points.Count > 0)
+                                serie[chart.Series.Count - 1].Points.Clear();
+
+                        if (!iperbole) //se stiamo creando una iperbole ed è la prima che la creiamo allora dobbiamo creare una nuova serie di appoggio per fare la seconda parte
+                        {
+                            serie.Add(new Series());
+                            chart.Series.Add(new Series());
+                            serie[chart.Series.Count - 1].ChartType = SeriesChartType.Line;
+                            Color colore = serie[chart.Series.Count - 2].Color;
+                            serie[chart.Series.Count - 1].Color = colore;
+                        }
+                        else if (serie[chart.Series.Count - 1].Points.Count > 0)
+                            serie[chart.Series.Count - 1].Points.Clear();
+                        
+                        posizioneFigureReale[posizioneFigureReale.Count - 1] = chart.Series.Count - 1;
+
+                        for (double x = min + Cx; x < max + Cx; x += 0.01)
+                        {
+                            double y = (a * x + b) / (c * x + d);
+                            if (x < Cx)
+                                serie[chart.Series.Count - 2].Points.AddXY(x, y);
+                            else
+                                serie[chart.Series.Count - 1].Points.AddXY(x, y);
+                        }
+                        if (!listBoxFormule.Items.Contains("y = (" + a + "x + " + b + ") / (" + c + "x + " + d + ")"))
+                            listBoxFormule.Items[listBoxFormule.Items.Count - 1] = "y = (" + a + "x + " + b + ") / (" + c + "x + " + d + ")";
                         
                         chart.Series[chart.Series.Count - 2] = serie[chart.Series.Count - 2]; //assegnamo alla serie di chart in penultima posizione la serie in penultima posizione appena caricata con tutti i punti
                         chart.Series[chart.Series.Count - 1] = serie[chart.Series.Count - 1]; //assegnamo alla serie di chart in ultima posizione la serie in ultima posizione appena caricata con tutti i punti
