@@ -1152,6 +1152,9 @@ namespace Calcolatrice_Avanzata
             lblA_M.Visible = false;
             lblB_Q.Visible = false;
             lblC.Visible = false;
+            lblD.Visible = false;
+            txtD.Visible = false;
+            txtD.Text = "";
             radioBtnFuochiX.Visible = false;
             radioBtnFuochiY.Visible = false;
             lblVet.Visible = false;
@@ -1182,11 +1185,11 @@ namespace Calcolatrice_Avanzata
             serie[chart.Series.Count - 1].ChartType = SeriesChartType.Line; //definiamo il tipo di dati della serie che stiamo creando
             serie[chart.Series.Count - 1].Color = Color.Black;
             
-            chart.ChartAreas[chart.Series.Count - 1].AxisX.Maximum = 3;
-            chart.ChartAreas[chart.Series.Count - 1].AxisX.Minimum = -3;
+            chart.ChartAreas[0].AxisX.Maximum = 3;
+            chart.ChartAreas[0].AxisX.Minimum = -3;
             
-            chart.ChartAreas[chart.Series.Count - 1].AxisY.Minimum = 0;
-            chart.ChartAreas[chart.Series.Count - 1].AxisY.Maximum = 5;
+            chart.ChartAreas[0].AxisY.Minimum = 0;
+            chart.ChartAreas[0].AxisY.Maximum = 5;
             
             serie[chart.Series.Count - 1].Points.AddXY(0, 0);
             serie[chart.Series.Count - 1].Points.AddXY(2, 3);
@@ -1198,6 +1201,7 @@ namespace Calcolatrice_Avanzata
             chart.Series[chart.Series.Count - 1] = serie[chart.Series.Count - 1];
 
             comboBoxFormule.SelectedIndex = -1;
+            posizioneFigureReale.Add(0);
             listBoxFormule.Items.Add(""); //aggiungiamo un oggetto alla lista
         }
 
