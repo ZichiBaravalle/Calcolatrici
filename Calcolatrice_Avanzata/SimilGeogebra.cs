@@ -137,7 +137,7 @@ namespace Calcolatrice_Avanzata
             txtVetY.Enabled = true;
             txtVetX.Enabled = true;
 
-            if (comboBoxFormule.SelectedIndex == 4 ||comboBoxFormule.SelectedIndex == 5)
+            if (comboBoxFormule.SelectedIndex == 4 || comboBoxFormule.SelectedIndex == 5 || comboBoxFormule.SelectedIndex == 7)
             {
                 lblVet.Visible = true;
                 txtVetX.Visible = true;
@@ -535,6 +535,62 @@ namespace Calcolatrice_Avanzata
                     this.txtD.Name = "textBox4";
                     this.txtD.Size = new System.Drawing.Size(100, 29);
                     this.txtD.TabIndex = 59;
+                    break;
+                
+                case 7: // esponenziale
+                    lblC.Visible = false;
+                    txtC.Visible = false;
+                    
+                    lblB_Q.Visible = false;
+                    txtB_Q.Visible = false;
+                    
+                    this.lblA_M.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.lblA_M.Location = new System.Drawing.Point(128 - 40, 125);
+                    this.lblA_M.Name = "label1";
+                    this.lblA_M.Size = new System.Drawing.Size(32 + 40, 36);
+                    this.lblA_M.TabIndex = 35;
+                    this.lblA_M.Text = "a^x";
+                    lblA_M.Visible = true;
+                    
+                    this.txtA_M.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.txtA_M.Location = new System.Drawing.Point(166, 122);
+                    this.txtA_M.Name = "txtM";
+                    this.txtA_M.Size = new System.Drawing.Size(100, 38);
+                    this.txtA_M.TabIndex = 36;
+                    txtA_M.Visible = true;
+                    
+                    this.lblB_Q.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.lblB_Q.Location = new System.Drawing.Point(373 - 40, 125);
+                    this.lblB_Q.Size = new System.Drawing.Size(32 + 40, 36);
+                    this.lblB_Q.TabIndex = 37;
+                    this.lblB_Q.Text = "n * x";
+                    lblB_Q.Visible = true;
+                    
+                    this.txtB_Q.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.txtB_Q.Location = new System.Drawing.Point(411, 122);
+                    this.txtB_Q.Name = "txtQ";
+                    this.txtB_Q.Size = new System.Drawing.Size(100, 38);
+                    this.txtB_Q.TabIndex = 38;
+                    txtB_Q.Visible = true;
+                    
+                    this.lblVet.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.lblVet.Location = new System.Drawing.Point(200, 207);
+                    this.lblVet.Name = "lblVet";
+                    this.lblVet.Size = new System.Drawing.Size(287, 27);
+                    this.lblVet.TabIndex = 52;
+                    this.lblVet.Text = "vet(                 ;                   )";
+                    
+                    this.txtVetX.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.txtVetX.Location = new System.Drawing.Point(250, 205);
+                    this.txtVetX.Name = "txtVetX";
+                    this.txtVetX.Size = new System.Drawing.Size(84, 29);
+                    this.txtVetX.TabIndex = 53;
+                    
+                    this.txtVetY.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    this.txtVetY.Location = new System.Drawing.Point(361, 205);
+                    this.txtVetY.Name = "txtVetY";
+                    this.txtVetY.Size = new System.Drawing.Size(90, 29);
+                    this.txtVetY.TabIndex = 55;
                     break;
             }
         }
@@ -1044,7 +1100,7 @@ namespace Calcolatrice_Avanzata
                         chart.Series[chart.Series.Count - 1] = serie[chart.Series.Count - 1]; //assegnamo alla serie di chart in ultima posizione la serie in ultima posizione appena caricata con tutti i punti
                         break;
                     
-                    case 6: //iperebole quadrilatera
+                    case 6: //iperebole equilatera
                         if (!double.TryParse(txtA_M.Text, out a))
                         {
                             MessageBox.Show("Inserisci correttamente il valore di a", "parametro a");
@@ -1138,6 +1194,10 @@ namespace Calcolatrice_Avanzata
                         
                         chart.Series[chart.Series.Count - 2] = serie[chart.Series.Count - 2]; //assegnamo alla serie di chart in penultima posizione la serie in penultima posizione appena caricata con tutti i punti
                         chart.Series[chart.Series.Count - 1] = serie[chart.Series.Count - 1]; //assegnamo alla serie di chart in ultima posizione la serie in ultima posizione appena caricata con tutti i punti
+                        break;
+                    
+                    case 7: //esponenziale
+                        
                         break;
                 }
 
