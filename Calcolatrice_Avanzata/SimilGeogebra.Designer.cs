@@ -54,7 +54,16 @@ namespace Calcolatrice_Avanzata
             // 
             this.comboBoxFormule.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxFormule.FormattingEnabled = true;
-            this.comboBoxFormule.Items.AddRange(new object[] { "RETTA", "PARABOLA PARALLELA ALL'ASSE Y", "PARABOLA PARALLELA ALL'ASSE X", "CIRCONFERENZA", "ELLISSE", "IPERBOLE", "IPERBOLE EQUILATERA", "ESPONENZIALE", "LOGARIRMICA" });
+            this.comboBoxFormule.Items.AddRange(new object[] {
+            "RETTA",                                        // 0
+            "PARABOLA",                                     // 1
+            "PARABOLA CORICATA",                            // 2
+            "CIRCONFERENZA",                                // 3
+            "ELLISSE",                                      // 4
+            "IPERBOLE",                                     // 5
+            "IPERBOLE QUADRILATERA",                        // 6
+            "ESPONENZIALE",                                 // 7
+            "LOGARITMO"});                                  // 8
             this.comboBoxFormule.Location = new System.Drawing.Point(182, 28);
             this.comboBoxFormule.Name = "comboBoxFormule";
             this.comboBoxFormule.Size = new System.Drawing.Size(287, 28);
@@ -148,7 +157,9 @@ namespace Calcolatrice_Avanzata
             // 
             // menuStrip1
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.btnMenu, this.gestioneFunzioniToolStripMenuItem });
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnMenu,
+            this.gestioneFunzioniToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
@@ -166,7 +177,9 @@ namespace Calcolatrice_Avanzata
             // 
             // gestioneFunzioniToolStripMenuItem
             // 
-            this.gestioneFunzioniToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.aggiungiFiguraToolStripMenuItem, this.eliminaFunzioneToolStripMenuItem });
+            this.gestioneFunzioniToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aggiungiFiguraToolStripMenuItem,
+            this.eliminaFunzioneToolStripMenuItem});
             this.gestioneFunzioniToolStripMenuItem.Name = "gestioneFunzioniToolStripMenuItem";
             this.gestioneFunzioniToolStripMenuItem.Size = new System.Drawing.Size(113, 21);
             this.gestioneFunzioniToolStripMenuItem.Text = "Gestione Funzioni";
@@ -217,6 +230,7 @@ namespace Calcolatrice_Avanzata
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         private System.Windows.Forms.ToolStripMenuItem eliminaFunzioneToolStripMenuItem;
